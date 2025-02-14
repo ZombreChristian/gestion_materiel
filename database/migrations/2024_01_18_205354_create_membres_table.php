@@ -27,7 +27,7 @@ return new class extends Migration
             $table->string("telephone2")->nullable();
             $table->string("pieceIdentite");
             $table->string("noPieceIdentite");
-            $table->decimal("montant");
+            $table->bigInteger("montant");
 
             $table->string('photo')->nullable();
             $table->timestamps();

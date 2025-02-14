@@ -19,7 +19,23 @@ class RolesTableSeeder extends Seeder
             'guard_name'=>'web',
 
             ],
+            // Rôle Enseignant
+            [
+                'name' => 'Enseignant',
+                'guard_name' => 'web',
+            ],
 
+            // Rôle Responsable labo
+            [
+                'name' => 'Responsable de labo',
+                'guard_name' => 'web',
+            ],
+
+            // Rôle Etudiant
+            [
+                'name' => 'Etudiant',
+                'guard_name' => 'web',
+            ],
     ]);
 
     }

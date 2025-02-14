@@ -12,31 +12,28 @@ class RolesHasPermissionsTableSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('role_has_permissions')->insert([
+        // Récupérer les IDs des permissions
+        $permissions = DB::table('permissions')->pluck('id')->toArray();
 
-            // Admin
-            [
-                'permission_id' => 1,
-                'role_id' => 1,
-
-            ],
-            [
-                'permission_id' => 2,
-                'role_id' => 1,
-
-            ],
-            [
-                'permission_id' => 3,
-                'role_id' => 1,
-
-            ],
-            
-
-
-
-
-
-
-        ]);
+        // Vérifier si les permissions existent
+        if (count($permissions) >= 3) { // Assure-toi qu'il y a au moins 3 permissions
+            DB::table('role_has_permissions')->insert([
+                [
+                    'permission_id' => $permissions[0],
+                    'role_id' => 1,
+                ],
+                [
+                    'permission_id' => $permissions[1],
+                    'role_id' => 1,
+                ],
+                [
+                    'permission_id' => $permissions[2],
+                    'role_id' => 1,
+                ],
+            ]);
+        } else {
+            // Si les permissions n'existent pas, loguer ou gérer l'erreur
+            \Log::error('Permissions not found. Please insert permissions first.');
+        }
     }
 }
