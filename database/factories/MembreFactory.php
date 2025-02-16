@@ -34,7 +34,7 @@ class MembreFactory extends Factory
             'telephone1' => fake()->phoneNumber,
             'telephone2' => fake()->phoneNumber,
             'adresse' => fake()->address,
-            'montant' => fake()->numberBetween($min = 100000, $max = 10000000),
+            // 'montant' => fake()->numberBetween($min = 100000, $max = 10000000),
             'noPieceIdentite' => fake()->regexify('[A-Za-z0-9]{8}'), // Génère une combinaison de 8 caractères alphanumériques            'montant' => fake()->numberBetween($min = 100000, $max = 10000000),            'photo' => fake()->imageUrl('60','60'),
             'sexe' => fake()->randomElement(['M','F']),
             'pieceIdentite' => fake()->randomElement(['CNIB','PASSPORT','PERMIS DE CONDUIRE']),

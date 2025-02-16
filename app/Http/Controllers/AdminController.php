@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Membre;
 use Illuminate\Support\Facades\Crypt;
 
+use Illuminate\Support\Facades\Log;
+
 
 class AdminController extends Controller
 {
@@ -20,31 +22,12 @@ class AdminController extends Controller
         return view('admin.index');
     }
 
-    public function AllMensuelle(Request $request,$membre_id)
-{
-    $pid =$request->id;
-    $membre = Membre::findOrFail($membre_id);
-    $cotisations = $membre->cotisations;
-
-    return view('livewire.membres.test', compact('cotisations', 'membre'));
-}
-
 
 
     public function dashboard(Request $request)
 {
-    $resultats = Cotisation::selectRaw('membre_id, SUM(IFNULL(lundi, 0) + IFNULL(mardi, 0) + IFNULL(mercredi, 0) + IFNULL(jeudi, 0) + IFNULL(vendredi, 0) + IFNULL(samedi, 0)) as somme_montants')
-        ->groupBy('membre_id')
-        ->latest()
-        ->paginate(6);
 
-        $membre_id = $request->membre_id; // Supposons que vous récupériez l'ID du membre à partir de la requête
-        $sommes = Cotisation::selectRaw('membre_id, Nosemaine, date, SUM(IFNULL(lundi, 0) + IFNULL(mardi, 0) + IFNULL(mercredi, 0) + IFNULL(jeudi, 0) + IFNULL(vendredi, 0) + IFNULL(samedi, 0)) as somme_montants')
-            ->where('membre_id', $membre_id) // Filtrer par membre_id
-            ->groupBy('membre_id', 'Nosemaine', 'date')
-            ->get();
-
-    return view('dashboard', ['resultats' => $resultats,'sommes' =>$sommes]);
+    return view('dashboard');
     // return view('admin.admin_profile_view',compact('profileData'));
 
 }
@@ -173,7 +156,8 @@ class AdminController extends Controller
 
     public function StoreAdmin(Request $request){
         $user = new User();
-
+ // Debug : afficher le mot de passe brut
+ Log::info('Mot de passe brut : ' . $request->password);
         // $user-> username = $request->username;
         $user->name = $request->name;
         $user->surname= $request->surname;
@@ -184,9 +168,15 @@ class AdminController extends Controller
         $user->phone = $request->phone;
         $user->phone2 = $request->phone2;
         $user->address = $request->address;
-        $user-> password = Hash::make($request->password);
+        // $user-> password = Hash::make($request->password);
+
+        // Hash du mot de passe
+    $hashedPassword = Hash::make($request->password);
+    Log::info('Mot de passe haché : ' . $hashedPassword);
+    $user->password = $hashedPassword;
         $user->role_id = $request->roles;
         $user-> status = 'active';
+        // dd($user->password);
         $user->save();
 
         DB::table('model_has_roles')->insert([

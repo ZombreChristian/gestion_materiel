@@ -1,45 +1,45 @@
 <?php
-use App\Http\Controllers\PatientController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\PersonnelController;
-use App\Http\Controllers\GestionnaireController;
-use App\Http\Controllers\SymptomeController;
 
-
-// use App\Http\Controllers\PersonnelController;
-
-use App\Http\Controllers\SpecialiteController;
-use App\Http\Controllers\MoyenmissionController;
-use App\Http\Controllers\EvenmissionController;
 use App\Http\Controllers\Backend\RoleController;
 
-use App\Http\Controllers\AMO\ArmeController;
 
 use App\Http\Controllers\PdfgenerateController;
-use App\Http\Controllers\Bon\BonController;
-use App\Http\Controllers\Dotation\DotationController;
 
-use App\Livewire\Counter;
 
-use App\Http\Controllers\CotisationController;
 use App\Http\Controllers\MembreController;
 
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\ReservationController;
 use App\Livewire\Utilisateurs;
-use App\Models\Patient;
-use App\Models\User;
-use App\Livewire\Membre;
+
 
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
 
 Route::get('/forgetpassword', function () {
 
     return view('auth.forgot-password');
 });
+
+
+Route::get('/signup', function (){
+    return view('signup');
+})-> name('signup');
+
+Route::get('/home_admin', function (){
+    return view('home_admin');
+})-> name('home_admin');
+
+Route::get("/ges_reservation", [ReservationController::class, "index"]);
+
+Route::get("/reservation/materiel", [ReservationController::class, "store"]);
+
+// Route::get("/prendre_mat/{ref}", [ReservationController::class, "prendre_mat"]);
+
+
 
 
 // Route::get('/about', function () {
@@ -200,40 +200,6 @@ Route::group([
         });
     });
 
-    Route::group([
-        "prefix" => "cotisations",
-        'as' => 'cotisations.'
-    ], function(){
-
-        Route::controller(CotisationController::class)->group(function(){
-
-            Route::get('/liste', 'AllCotisation')->name('all.cotisation');
-            Route::get('/semaine', 'Semaine')->name('semaine.cotisation');
-
-
-            Route::post('/store', 'StoreCotisation')->name('store.cotisation');
-            Route::get('/delete/{id}','DeleteCotisation')->name('delete.cotisation');
-
-            Route::get('/cherche','SearchCotisation')->name('cherche.paiement');
-
-            Route::get('/filter','Filter')->name('filter.cotisation');
-
-
-            // Route::get('/sommeMensuelle', 'sommeMensuelleParMembre')->name('somme.mensuelle');
-
-
-
-
-
-
-
-
-            // Route::post('/store/Symptome','StoreSymptome')->name('store.symptome');
-            // Route::post('/update/Symptome','UpdateSymptome')->name('update.symptome');
-            // Route::get('/delete/Symptome/{id}','DeleteSymptome')->name('delete.symptome');
-
-        });
-    });
 
 });
 // ------------------------------------------------------------------------------------------
@@ -255,12 +221,10 @@ Route::group([
 // Route::get('/generate-pdf','PdfgenrateController@generatePDF');->middleware('permission:test1')
 Route::get('/generate-pdf',    [PdfgenerateController::class, 'generatePDF'])->name('pdf');
 
-Route::get('/telecharger-pdf',  [ArmeController::class, 'telechargerPdf'])->name('telecharger');
 
 
 Route::get('/telecharger-pdf/{id}',  [PdfgenerateController::class, 'telechargerPdf'])->name('telecharger.pdf');
 
-Route::get('/telecharg-pdf/{id}',  [DotationController::class, 'telechargerPdf'])->name('telecharg.pdf');
 
 
 // Route::get('/telecharger-pdf/{id}', 'BonController@telechargerPdf')->name('telecharger.pdf');
