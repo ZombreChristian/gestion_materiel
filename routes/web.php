@@ -5,6 +5,9 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PersonnelController;
 use App\Http\Controllers\GestionnaireController;
 use App\Http\Controllers\SymptomeController;
+use App\Http\Controllers\ReportController;
+
+
 
 
 // use App\Http\Controllers\PersonnelController;
@@ -56,6 +59,15 @@ Route::get('/forgetpassword', function () {
 Route::get('/dashboard', [AdminController::class, 'dashboard'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
+
+    Route::get('/reports/generate', [ReportController::class, 'generate'])->name('reports.generate');
+// routes/web.php
+// Route pour exporter en PDF
+Route::get('/export-pdf', [ReportController::class, 'exportPdf']);
+
+// Route pour exporter en Excel
+Route::get('/export-excel', [ReportController::class, 'exportExcel']);
+
 
 // Route::middleware('auth')->group(function () {
 //     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -167,6 +179,8 @@ Route::group([
             Route::get('/admin/edit/roles/{id}','AdminEditRoles')->name('admin.edit.roles');
             Route::post('/admin/roles/update/{id}','AdminRolesUpdate')->name('admin.roles.update');
             Route::get('/admin/delete/roles/{id}','AdminDeleteRoles')->name('admin.delete.roles');
+            Route::get('/reports/generate', [RapportController::class, 'generate'])->name('reports.generate');            
+
         });
 
     });
@@ -192,6 +206,7 @@ Route::group([
 
             Route::get('/search','Search')->name('cherche.membre');
             Route::get('/filter','Filter')->name('filter.membre');
+            
 
 
 
@@ -278,6 +293,7 @@ Route::group([
     ], function(){
 
         Route::get("/utilisateurs", Utilisateurs::class)->name("users.index");
+        Route::get('/reports/generate', [ReportController::class, 'generate'])->name('reports.generate');
 
     });
 });
