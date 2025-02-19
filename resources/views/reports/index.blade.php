@@ -56,7 +56,7 @@
                                 <h3 class="card-title">Liste des équipements</h3>
                             </div>
                             <div class="card-body">
-                                <table class="table table-bordered">
+                                <table id="equipmentsTable" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
                                             <th>Équipement</th>
@@ -64,12 +64,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($equipements as $equipement)
-                                            <tr>
-                                                <td>{{ $equipement->nom }}</td>
-                                                <td>{{ $equipement->utilisation }}</td>
-                                            </tr>
-                                        @endforeach
+                                        <!-- Les données seront chargées via AJAX -->
                                     </tbody>
                                 </table>
                             </div>
@@ -94,6 +89,14 @@
 
     <!-- Scripts pour les graphiques -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Scripts pour DataTables -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
     <script>
         // Données pour le graphique d'utilisation des équipements
         var usageData = @json($equipements);
@@ -123,28 +126,24 @@
             }
         });
 
-        // Exportation en PDF
-        document.getElementById('exportPdf').addEventListener('click', function() {
-            fetch("{{ route('exportPdf') }}")
-                .then(response => response.blob())
-                .then(blob => {
-                    var link = document.createElement('a');
-                    link.href = window.URL.createObjectURL(blob);
-                    link.download = "rapport.pdf";
-                    link.click();
-                });
-        });
-
-        // Exportation en Excel
-        document.getElementById('exportExcel').addEventListener('click', function() {
-            fetch("{{ route('exportExcel') }}")
-                .then(response => response.blob())
-                .then(blob => {
-                    var link = document.createElement('a');
-                    link.href = window.URL.createObjectURL(blob);
-                    link.download = "rapport.xlsx";
-                    link.click();
-                });
+        // Initialiser DataTables pour le tableau des équipements
+        $(document).ready(function() {
+            $('#equipmentsTable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('equipments.data') }}",
+                columns: [
+                    { data: 'nom', name: 'nom' },
+                    { data: 'utilisation', name: 'utilisation' }
+                ],
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.11.5/i18n/fr.json'
+                }
+            });
         });
     </script>
 @endsection

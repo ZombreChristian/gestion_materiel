@@ -67,6 +67,8 @@ Route::get('/dashboard', [AdminController::class, 'dashboard'])
 Route::get('/export-pdf', [ReportController::class, 'exportPdf'])->name('exportPdf');
 Route::get('/export-excel', [ReportController::class, 'exportExcel'])->name('exportExcel');
 Route::get('/equipements', [EquipementController::class, 'index'])->name('equipements.index');
+Route::get('/reports/data', [ReportController::class, 'getReportsData'])->name('reports.data');
+Route::get('/equipments/data', [ReportController::class, 'getEquipmentsData'])->name('equipments.data');
 
 // Route::middleware('auth')->group(function () {
 //     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -178,7 +180,7 @@ Route::group([
             Route::get('/admin/edit/roles/{id}','AdminEditRoles')->name('admin.edit.roles');
             Route::post('/admin/roles/update/{id}','AdminRolesUpdate')->name('admin.roles.update');
             Route::get('/admin/delete/roles/{id}','AdminDeleteRoles')->name('admin.delete.roles');
-            
+
         });
 
     });
@@ -204,7 +206,7 @@ Route::group([
 
             Route::get('/search','Search')->name('cherche.membre');
             Route::get('/filter','Filter')->name('filter.membre');
-            
+
 
 
 
