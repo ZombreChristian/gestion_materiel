@@ -44,11 +44,16 @@ class ReportController extends Controller
      */
     public function exportPdf()
     {
-        // Récupérer tous les équipements
+        // Récupérer les équipements
         $equipements = Equipement::all();
 
-        // Charger la vue PDF et générer le fichier
+        // Charger la vue PDF
         $pdf = Pdf::loadView('reports.rapport_pdf', compact('equipements'));
+
+        // Options pour dompdf
+        $pdf->setPaper('A4', 'landscape'); // Format A4 en mode paysage
+        $pdf->setOption('isHtml5ParserEnabled', true); // Activer le parseur HTML5
+        $pdf->setOption('isRemoteEnabled', true); // Activer le chargement des ressources distantes
 
         // Télécharger le PDF
         return $pdf->download('rapport.pdf');
