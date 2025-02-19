@@ -3,32 +3,36 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Equipement;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade as PDF;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ReportExport;
+use resources\views\reports\index;
 
 class ReportController extends Controller
 {
-    public function generate()
+    public function index()
     {
-        return view('reports.generate', [
-            'title' => 'Générer un rapport',
+        $suggestions = Equipement::where('utilisation', '<', 20)->get();
+
+        $equipments = Equipement::all();
+        $mostUsedEquipment = Equipement::orderBy('utilisation', 'desc')->first()->nom ?? 'Aucun';
+
+        return view('reports.index', [
+            'equipements' => $equipments,
+            'mostUsedEquipment' => $mostUsedEquipment,
+            'suggestions' => $suggestions, 
+            
         ]);
+        
+        
     }
 
     public function exportPdf()
     {
-        // Logique pour récupérer les données nécessaires pour le rapport
-        $data = [
-            // Exemple de données, remplace-les par les données réelles
-            'reportData' => 'Ceci est un exemple de données de rapport.',
-        ];
-
-        // Générer le PDF avec la vue
-        $pdf = PDF::loadView('rapport.pdf', $data);
-
-        // Télécharger le fichier PDF
+        $equipements = Equipement::all(); // Récupérer les données
+        $pdf = PDF::loadView('reports.rapport_pdf', compact('equipements'));
         return $pdf->download('rapport.pdf');
     }
 

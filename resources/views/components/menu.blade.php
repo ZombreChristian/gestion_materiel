@@ -43,7 +43,7 @@
 
 
           <li class="nav-item">
-            <a href="{{ route('reports.generate') }}" class="nav-link">
+            <a href="{{ route('reports.index') }}" class="nav-link">
                 <i class="nav-icon fas fa-file-alt"></i>
                 <p>Générer un rapport</p>
             </a>

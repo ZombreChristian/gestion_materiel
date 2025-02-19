@@ -6,6 +6,7 @@ use App\Http\Controllers\PersonnelController;
 use App\Http\Controllers\GestionnaireController;
 use App\Http\Controllers\SymptomeController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\EquipementController;
 
 
 
@@ -61,13 +62,11 @@ Route::get('/dashboard', [AdminController::class, 'dashboard'])
     ->name('dashboard');
 
     Route::get('/reports/generate', [ReportController::class, 'generate'])->name('reports.generate');
-// routes/web.php
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 // Route pour exporter en PDF
-Route::get('/export-pdf', [ReportController::class, 'exportPdf']);
-
-// Route pour exporter en Excel
-Route::get('/export-excel', [ReportController::class, 'exportExcel']);
-
+Route::get('/export-pdf', [ReportController::class, 'exportPdf'])->name('exportPdf');
+Route::get('/export-excel', [ReportController::class, 'exportExcel'])->name('exportExcel');
+Route::get('/equipements', [EquipementController::class, 'index'])->name('equipements.index');
 
 // Route::middleware('auth')->group(function () {
 //     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -179,8 +178,7 @@ Route::group([
             Route::get('/admin/edit/roles/{id}','AdminEditRoles')->name('admin.edit.roles');
             Route::post('/admin/roles/update/{id}','AdminRolesUpdate')->name('admin.roles.update');
             Route::get('/admin/delete/roles/{id}','AdminDeleteRoles')->name('admin.delete.roles');
-            Route::get('/reports/generate', [RapportController::class, 'generate'])->name('reports.generate');            
-
+            
         });
 
     });

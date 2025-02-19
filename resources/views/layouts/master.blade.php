@@ -9,6 +9,9 @@
     @livewireStyles
     {{-- <link href="https://cdn.jsdelivr.net/npm/bs-stepper/dist/css/bs-stepper.min.css" rel="stylesheet" /> --}}
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
     {{-- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" > --}}
     <link rel="stylesheet"  href="{{asset('plugins/toastr/toastr.min.css')}}" >
     <link rel="stylesheet"  href="{{asset('plugins/toastr/toastr.css')}}" >
@@ -176,6 +179,7 @@
 
 
         <script>
+
             @if(Session::has('message'))
             var type = "{{ Session::get('alert-type','info') }}"
             switch (type) {

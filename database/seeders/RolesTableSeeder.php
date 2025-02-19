@@ -4,39 +4,21 @@ namespace Database\Seeders;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
 
 class RolesTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
-    public function run(): void
+    public function run()
     {
-        DB::table('roles')->insert([
-            // admin 1
-            [
-            'name' =>'admin',
-            'guard_name'=>'web',
-
-            ],
-            // Rôle Enseignant
-            [
-                'name' => 'Enseignant',
-                'guard_name' => 'web',
-            ],
-
-            // Rôle Responsable labo
-            [
-                'name' => 'Responsable de labo',
-                'guard_name' => 'web',
-            ],
-
-            // Rôle Etudiant
-            [
-                'name' => 'Etudiant',
-                'guard_name' => 'web',
-            ],
-    ]);
-
+        $roles = ['admin', 'Enseignant', 'Responsable de labo', 'Etudiant'];
+    
+        foreach ($roles as $role) {
+            if (!Role::where('name', $role)->where('guard_name', 'web')->exists()) {
+                Role::create(['name' => $role, 'guard_name' => 'web']);
+            }
+        }
     }
 }
