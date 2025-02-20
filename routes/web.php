@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 
+use App\Http\Livewire\TypeMaterielComp;
 use App\Http\Controllers\Backend\RoleController;
 
 
@@ -33,6 +34,7 @@ Route::get('/home_admin', function (){
     return view('home_admin');
 })-> name('home_admin');
 
+Route::get("/equipement", TypeMaterielComp::class)->name("equipement");
 Route::get("/ges_reservation", [ReservationController::class, "index"]);
 
 Route::get("/reservation/materiel", [ReservationController::class, "store"]);
@@ -130,7 +132,8 @@ Route::group([
         "prefix" => "roles",
         'as' => 'roles.'
     ], function(){
-
+       
+       // Route::get("/articles", ArticleComp::class)->name("articles");
         Route::controller(AdminController::class)->group(function(){
             Route::get('/all/admin','AllAdmin')->name('all.admin');
             Route::post('/store/admin','StoreAdmin')->name('store.admin');

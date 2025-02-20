@@ -14,11 +14,13 @@ return new class extends Migration
         Schema::create('materiels', function (Blueprint $table) {
             $table->id();
             $table->string("nom")->unique();
+            $table->string("noSerie")->unique();
             $table->string("imageUrl")->nullable();
             $table->boolean("estDisponible")->default(1);
-            $table->foreignId("type_materiel_id")->constrained();
+            $table->foreignId("type_materiels_id")->constrained();
             $table->timestamps();
         });
+        Schema::enableForeignKeyConstraints();
     }
 
     /**
@@ -27,7 +29,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table("materiels", function(Blueprint $table){
-            $table->dropForeign("type_materiel_id");
+            $table->dropForeign("type_materiels_id");
         });
         Schema::dropIfExists('materiels');
     }

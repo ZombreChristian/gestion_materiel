@@ -26,7 +26,7 @@ class Membre extends Model
         'telephone1',
         'telephone2',
         'email',
-        'montant',
+    //    'montant',
 
 
     ];

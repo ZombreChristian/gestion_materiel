@@ -1,7 +1,10 @@
 <?php
 
 namespace Database\Seeders;
-
+use App\Models\TypeMateriel;
+use App\Models\Materiel;
+use App\Models\StatutReservation;
+use APP\Modeels\Reservation;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -19,6 +22,11 @@ class DatabaseSeeder extends Seeder
          $this->call(UsersTableSeeder::class);
          $this->call(RolesHasPermissionsTableSeeder::class);
           $this->call(ModelHasRoleTableSeeder::class);
+          
+          $this->call(TypeMaterielSeeder::class);
+          Materiel::factory(20)->create();
+
+          $this->call(StatutReservationSeeder::class);
 
 
 
