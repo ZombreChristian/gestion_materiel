@@ -12,7 +12,7 @@
     <div class="wrapper fadeInDown">
         <div id="formContent">
             <!-- Tabs Titles -->
-            <h2 class="active"> S'authentifier</h2>
+            <h2 class="active"> Contacts</h2>
 
 
             <!-- Icon -->
@@ -23,23 +23,22 @@
             <!-- Login Form -->
             <form method="post" method="POST" action="{{ route('login') }}">
                 @csrf
-
                 <div class="form-group">
-                    <input class="au-input au-input--full" placeholder="email" type="email" id="login" name="login">
+                    <input class="au-input au-input--full" placeholder="Sujet" type="text" id="password" name="password">
                 </div>
 
                 <div class="form-group">
-                    <input class="au-input au-input--full" placeholder="password" type="password" id="password" name="password">
+                    <input class="au-input au-input--full" placeholder="message" type="text" id="login" name="login">
                 </div>
 
-                <input type="submit" class="fadeIn fourth" value="Se connecter">
+
+
+
+
+                <input type="submit" class="fadeIn fourth" value="Envoyer">
             </form>
 
-            <!-- Remind Passowrd -->
-            <div id="formFooter">
-                <a class="underlineHover" href="#">Forgot Password?</a>
-                <span> Contactz admin</span>
-            </div>
+
 
         </div>
     </div>
