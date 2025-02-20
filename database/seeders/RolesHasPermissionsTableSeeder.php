@@ -1,9 +1,11 @@
 <?php
 
 namespace Database\Seeders;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class RolesHasPermissionsTableSeeder extends Seeder
 {
@@ -12,31 +14,29 @@ class RolesHasPermissionsTableSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('role_has_permissions')->insert([
+        // Vérifie si les permissions existent dans la base de données
+        $permissions = Permission::whereIn('id', [1, 2, 3])->pluck('id')->toArray();
 
-            // Admin
-            [
-                'permission_id' => 1,
-                'role_id' => 1,
+        if (count($permissions) < 3) {
+            $this->command->error("Certaines permissions n'existent pas. Exécute d'abord le seeder des permissions.");
+            return;
+        }
 
-            ],
-            [
-                'permission_id' => 2,
-                'role_id' => 1,
+        // Vérifie si le rôle admin existe
+        $adminRole = Role::find(1);
+        if (!$adminRole) {
+            $this->command->error("Le rôle Admin n'existe pas. Exécute d'abord le seeder des rôles.");
+            return;
+        }
 
-            ],
-            [
-                'permission_id' => 3,
-                'role_id' => 1,
+        // Associer les permissions au rôle admin
+        foreach ($permissions as $permissionId) {
+            DB::table('role_has_permissions')->insert([
+                'permission_id' => $permissionId,
+                'role_id' => $adminRole->id,
+            ]);
+        }
 
-            ],
-
-
-
-
-
-
-
-        ]);
+        $this->command->info("Les permissions ont été correctement associées au rôle Admin.");
     }
 }
