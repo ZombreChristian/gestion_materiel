@@ -128,6 +128,48 @@
                 </li>
         </ul>
     </li>
+    <li class="nav-item {{ setMenuClass('admin.membres', 'menu-open') }}">
+        <a href="#" class="nav-link {{ setMenuClass('admin.membres', 'active') }}">
+            <i class="nav-icon fas fa-circle"></i>
+            <p>
+           Gestion équipements
+            <i class="right fas fa-angle-left"></i>
+            </p>
+        </a>
+
+        <ul class="nav nav-treeview">
+
+                <li class="nav-item">
+                    <a href="{{route('admin.membres.all.membre')}}" class="nav-link {{ setMenuActive('admin.membres.all.membre') }}">
+
+                    <i class="far fa-dot-circle nav-icon"></i>
+                    <p>équipements</p>
+                    </a>
+                </li>
+        </ul>
+    </li>
+
+    <li class="nav-item {{ setMenuClass('admin.membres', 'menu-open') }}">
+        <a href="#" class="nav-link {{ setMenuClass('admin.membres', 'active') }}">
+            <i class="nav-icon fas fa-circle"></i>
+            <p>
+           Gestion Reservations
+            <i class="right fas fa-angle-left"></i>
+            </p>
+        </a>
+
+        <ul class="nav nav-treeview">
+
+                <li class="nav-item">
+                    <a href="{{route('admin.membres.all.membre')}}" class="nav-link {{ setMenuActive('admin.membres.all.membre') }}">
+
+                    <i class="far fa-dot-circle nav-icon"></i>
+                    <p>Reservations</p>
+                    </a>
+                </li>
+        </ul>
+    </li>
+
 
 
 
