@@ -32,32 +32,16 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        // return redirect()->intended(RouteServiceProvider::HOME);
+        // Vérification du rôle de l'utilisateur après l'authentification
+        $user = Auth::user();
 
-        // $users = User::with('role')->get();
+        if ($user->role_id === 1) { // Supposons que le rôle admin a l'ID 1
+            return redirect()->intended('/dashboard');
+        }
 
-        // // $userRole = $request->user()->role->name;
+        return redirect()->intended('/home_admin');
 
-        // $url = '';
-        // $user = $request->user(); // Récupérer l'utilisateur authentifié
-        // $userRole = $user->role;  // Utiliser la relation pour récupérer le rôle
-
-        // if ($userRole->name === 'admin') {
-        //     $url = 'admin/dashboard';
-        // } elseif ($userRole->name === 'personnel') {
-        //     $url = 'personnel/dashboard';
-        // }
-        // elseif ($userRole->name === 'gestionnaire') {
-        //     $url = 'gestionnaire/dashboard';
-        // }
-        // elseif ($userRole->name === 'permanencier') {
-        //     $url = 'permanencier/dashboard';
-        // }  else {
-        //     $url = '/';
-        // }
-
-
-        // return redirect()->intended($url);
         }
 
 
