@@ -8,8 +8,17 @@
             <div class="image img-cir img-120">
                 <img src="images/user.png" alt="John Doe" />
             </div>
-            <h4 class="name">Manuella</h4>
-            <a href="/logout">Logout</a>
+            <h4 class="name">{{ userFullName() }}</h4>
+            <p class="text-muted text-center">{{getRolesName()}}</p>
+
+            <a href="{{ route('logout') }}" onclick="event.preventDefault();
+                            document.getElementById('logout-form').submit();">
+
+                Se déconnecter</a>
+
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                </form>
         </div>
         <nav class="navbar-sidebar2">
             <ul class="list-unstyled navbar__list">

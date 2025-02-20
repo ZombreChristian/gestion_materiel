@@ -30,6 +30,10 @@ Route::get('/signup', function (){
     return view('signup');
 })-> name('signup');
 
+Route::get('/contact', function (){
+    return view('contact');
+})-> name('contact');
+
 Route::get('/home_admin', function (){
     return view('home_admin');
 })-> name('home_admin');
@@ -65,9 +69,9 @@ Route::get('/dashboard', [AdminController::class, 'dashboard'])
 //     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 // });
 
+Route::get('/logout', [AdminController::class, 'AdminLogout'])->name('logout');
 
 Route::middleware('auth')->group(function () {
-// Route::get('/logout', [AdminController::class, 'AdminLogout'])->name('logout');
 Route::get('/profile', [AdminController::class, 'AdminProfile'])->name('profile');
 Route::post('/profile/store', [AdminController::class, 'AdminProfileStore'])->name('profile.store');
 Route::get('/change/password', [AdminController::class, 'AdminChangePassword'])->name('change.password');
@@ -207,19 +211,7 @@ Route::group([
 });
 // ------------------------------------------------------------------------------------------
 
-                Route::get('/paiement/{id}', [AdminController::class, 'AllMensuelle'])->name('all.paiement');
 
-
-
-Route::group([
-    // "middleware" => ["auth", "auth.admin"],
-    'as' => 'gestionnaire.'
-], function(){
-
-
-
-
-});
 
 // Route::get('/generate-pdf','PdfgenrateController@generatePDF');->middleware('permission:test1')
 Route::get('/generate-pdf',    [PdfgenerateController::class, 'generatePDF'])->name('pdf');

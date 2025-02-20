@@ -10,7 +10,7 @@
         <nav id="navmenu" class="navmenu">
             <ul>
 
-                <li><a href="#">Contact</a></li>
+                <li><a href="{{route ('contact')}}">Contact</a></li>
             </ul>
             <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>
