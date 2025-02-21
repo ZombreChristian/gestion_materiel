@@ -3,76 +3,216 @@
 
 @section('contenu')
 <div class="container-fluid mt-4">
-    <div class="card">
-        <div class="card-header bg-primary text-white">
-            <h1 class="card-title">Tableau de Bord - Rapports</h1>
+    <!-- Titre principal -->
+    <h1 class="mb-4">Tableau de Bord - Rapports</h1>
+
+    <!-- Section de recherche et tableau des équipements -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-dark text-white">
+                    <h3 class="card-title">Liste des équipements</h3>
+                </div>
+                <div class="card-body">
+                    <input type="text" id="searchInput" class="form-control mb-3" placeholder="Rechercher un équipement...">
+                    <table id="equipmentsTable" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Équipement</th>
+                                <th>Utilisation (%)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($equipements as $equipement)
+                                <tr>
+                                    <td>{{ $equipement->nom }}</td>
+                                    <td>{{ $equipement->utilisation }}%</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Utilisation des équipements</h3>
-                        </div>
-                        <div class="card-body">
-                            <canvas id="usageChart"></canvas>
-                        </div>
-                    </div>
+    </div>
+
+    <!-- Section des statistiques et suggestions -->
+    <div class="row">
+        <!-- Équipement le plus utilisé -->
+        <div class="col-md-6">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-success text-white">
+                    <h3 class="card-title">Équipement le plus utilisé</h3>
                 </div>
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Équipement le plus utilisé</h3>
-                        </div>
-                        <div class="card-body">
-                            <h4 class="text-center">{{ $mostUsedEquipment }}</h4>
-                        </div>
-                    </div>
+                <div class="card-body">
+                    <h4 class="text-center">{{ $mostUsedEquipment }}</h4>
                 </div>
             </div>
-            <div class="row mt-4">
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Prévisions des besoins</h3>
-                        </div>
-                        <div class="card-body">
-                            <ul class="list-group">
-                                @foreach ($suggestions as $suggestion)
-                                    <li class="list-group-item">{{ $suggestion->nom }} : Taux d'utilisation faible ({{ $suggestion->utilisation }}%)</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    </div>
+        </div>
+
+        <!-- Suggestions d'équipements sous-utilisés -->
+        <div class="col-md-6">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-warning text-white">
+                    <h3 class="card-title">Équipements sous-utilisés (utilisation < 20%)</h3>
                 </div>
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Liste des équipements</h3>
-                        </div>
-                        <div class="card-body">
-                            <table id="equipmentsTable" class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Équipement</th>
-                                        <th>Utilisation (%)</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Données chargées via AJAX -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        @forelse ($suggestions as $suggestion)
+                            <li class="list-group-item">
+                                {{ $suggestion->nom }} : Taux d'utilisation faible ({{ $suggestion->utilisation }}%)
+                            </li>
+                        @empty
+                            <li class="list-group-item text-muted">Aucun équipement sous-utilisé</li>
+                        @endforelse
+                    </ul>
                 </div>
             </div>
-            <div class="row mt-4">
-                <div class="col-md-12 text-center">
-                    <a href="{{ route('exportPdf') }}" class="btn btn-danger"><i class="fas fa-file-pdf"></i> Télécharger en PDF</a>
-                    <a href="{{ route('exportExcel') }}" class="btn btn-success ml-2"><i class="fas fa-file-excel"></i> Télécharger en Excel</a>
+        </div>
+    </div>
+
+    <!-- Section des rapports détaillés -->
+    <div class="row">
+        <!-- Tableau des équipements sous-utilisés -->
+        <div class="col-md-6">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-danger text-white">
+                    <h3 class="card-title">Équipements sous-utilisés</h3>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Utilisation (%)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($suggestions as $equipement)
+                                <tr>
+                                    <td>{{ $equipement->nom }}</td>
+                                    <td>{{ $equipement->utilisation }}%</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tableau des annulations -->
+        <div class="col-md-6">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-secondary text-white">
+                    <h3 class="card-title">Fréquence des annulations</h3>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Équipement</th>
+                                <th>Motif</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2024-02-15</td>
+                                <td>Oscilloscope</td>
+                                <td>Panne technique</td>
+                            </tr>
+                            <tr>
+                                <td>2024-02-16</td>
+                                <td>Ordinateur</td>
+                                <td>Problème d’accès</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section des boutons d'exportation -->
+    <div class="row mb-4">
+        <div class="col-md-12 text-center">
+            <a href="{{ route('exportPdf') }}" class="btn btn-danger">
+                <i class="fas fa-file-pdf"></i> Télécharger en PDF
+            </a>
+            <a href="{{ route('exportExcel') }}" class="btn btn-success ml-2">
+                <i class="fas fa-file-excel"></i> Télécharger en Excel
+            </a>
+        </div>
+    </div>
+
+    <!-- Section des graphiques -->
+    <div class="row">
+        <!-- Graphique circulaire : Taux de réservation -->
+        <div class="col-md-6">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title">Taux de Réservation</h3>
+                </div>
+                <div class="card-body">
+                    <canvas id="reservationChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Graphique en barres : Utilisation des équipements -->
+        <div class="col-md-6">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-info text-white">
+                    <h3 class="card-title">Utilisation des équipements</h3>
+                </div>
+                <div class="card-body">
+                    <canvas id="usageChart"></canvas>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Scripts pour les graphiques -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Graphique circulaire : Taux de réservation
+        var reservationCtx = document.getElementById("reservationChart").getContext("2d");
+        new Chart(reservationCtx, {
+            type: "doughnut",
+            data: {
+                labels: ["Réservé", "Disponible"],
+                datasets: [{
+                    data: [70, 30], // A remplacer par des valeurs dynamiques
+                    backgroundColor: ["#28a745", "#dc3545"]
+                }]
+            }
+        });
+
+        // Graphique en barres : Utilisation des équipements
+        var usageCtx = document.getElementById("usageChart").getContext("2d");
+        new Chart(usageCtx, {
+            type: "bar",
+            data: {
+                labels: @json($equipements->pluck('nom')),
+                datasets: [{
+                    label: "Utilisation (%)",
+                    data: @json($equipements->pluck('utilisation')),
+                    backgroundColor: "rgba(54, 162, 235, 0.5)",
+                    borderColor: "rgba(54, 162, 235, 1)",
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+    });
+</script>
 @endsection

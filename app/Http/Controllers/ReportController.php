@@ -27,6 +27,8 @@ class ReportController extends Controller
         // Récupérer l'équipement le plus utilisé
         $mostUsedEquipment = Equipement::orderBy('utilisation', 'desc')->first()->nom ?? 'Aucun';
 
+       // dd($equipements, $suggestions, $mostUsedEquipment);
+
         // Retourner la vue avec les données
         return view('reports.index', [
             'equipements' => $equipements,

@@ -38,7 +38,10 @@
                         <i></i>Réservations</a>
                 </li>
 
-
+                <li>
+                    <a href="/ges_reservation">
+                        <i></i>Rapport d'utilisation</a>
+                </li>
 
             </ul>
         </nav>
