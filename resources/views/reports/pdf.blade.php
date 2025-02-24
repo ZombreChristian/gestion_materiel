@@ -11,7 +11,7 @@
     </style>
 </head>
 <body>
-    <h1>Rapport d'Utilisation des Équipements</h1>
+    <h1>Areailisation des Équipements</h1>
     <table>
         <thead>
             <tr>

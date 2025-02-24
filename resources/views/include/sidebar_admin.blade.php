@@ -39,7 +39,7 @@
                 </li>
 
                 <li>
-                    <a href="/ges_reservation">
+                    <a href="/rapport_d'utilisation">
                         <i></i>Rapport d'utilisation</a>
                 </li>
 

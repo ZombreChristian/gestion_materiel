@@ -12,7 +12,7 @@
                 @endforeach
 
         </div>
-    </div>
+    </divz>
     </div>
 
     <div class="row">
@@ -22,7 +22,7 @@
             <div class="inner">
               <h3>150</h3>
 
-              <p>New Orders</p>
+              <p>Utilisateurs</p>
             </div>
             <div class="icon">
               <i class="ion ion-bag"></i>
@@ -37,7 +37,7 @@
             <div class="inner">
               <h3>53<sup style="font-size: 20px">%</sup></h3>
 
-              <p>Bounce Rate</p>
+              <p>Reservation</p>
             </div>
             <div class="icon">
               <i class="ion ion-stats-bars"></i>
@@ -52,7 +52,7 @@
             <div class="inner">
               <h3>44</h3>
 
-              <p>User Registrations</p>
+              <p>En attente de validation</p>
             </div>
             <div class="icon">
               <i class="ion ion-person-add"></i>
@@ -67,7 +67,7 @@
             <div class="inner">
               <h3>65</h3>
 
-              <p>Unique Visitors</p>
+              <p>Total de materiels</p>
             </div>
             <div class="icon">
               <i class="ion ion-pie-graph"></i>
@@ -79,41 +79,46 @@
       </div>
 
       <div class="row">
-        <!-- Left col -->
-        <section class="col-lg-7 connectedSortable">
-          <!-- Custom tabs (Charts with tabs)-->
-          <div class="card">
+    <div class="col-12">
+        <div class="card">
             <div class="card-header">
-              <h3 class="card-title">
-                <i class="fas fa-chart-pie mr-1"></i>
-                Sales
-              </h3>
-              <div class="card-tools">
-                <ul class="nav nav-pills ml-auto">
-                  <li class="nav-item">
-                    <a class="nav-link active" href="#revenue-chart" data-toggle="tab">Area</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#sales-chart" data-toggle="tab">Donut</a>
-                  </li>
-                </ul>
-              </div>
-            </div><!-- /.card-header -->
+                <h3 class="card-title">Liste des utilisateurs</h3>
+            </div>
             <div class="card-body">
-              <div class="tab-content p-0">
-                <!-- Morris chart - Sales -->
-                <div class="chart tab-pane active" id="revenue-chart"
-                     style="position: relative; height: 300px;">
-                    <canvas id="revenue-chart-canvas" height="300" style="height: 300px;"></canvas>
-                 </div>
-                <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;">
-                  <canvas id="sales-chart-canvas" height="300" style="height: 300px;"></canvas>
-                </div>
-              </div>
-            </div><!-- /.card-body -->
-          </div>
-        </section>
-          <!-- /.card -->
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nom</th>
+                            <th>Email</th>
+                            <th>Rôle</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($users as $user)
+                            <tr>
+                                <td>{{ $user->id }}</td>
+                                <td>{{ $user->name }}</td>
+                                <td>{{ $user->email }}</td>
+                                <td>
+                                    @foreach($user->roles as $role)
+                                        {{ $role->nom }}
+                                    @endforeach
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="card-footer d-flex justify-content-center">
+                {{ $users->links('pagination::bootstrap-5')  }}  {{-- Affiche les boutons "Suivant" et "Précédent" --}}
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 

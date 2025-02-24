@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Log;
 class AdminController extends Controller
 {
     public function AdminDashboard(){
+
         return view('admin.index');
     }
 
@@ -27,7 +28,8 @@ class AdminController extends Controller
     public function dashboard(Request $request)
 {
 
-    return view('dashboard');
+    $users = User::paginate(6); // Récupère 6 utilisateurs par page
+    return view('dashboard', compact('users'));
     // return view('admin.admin_profile_view',compact('profileData'));
 
 }
