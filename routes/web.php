@@ -9,6 +9,9 @@ use App\Http\Controllers\PdfgenerateController;
 
 
 use App\Http\Controllers\MembreController;
+use App\Http\Controllers\TypeMaterielController;
+use App\Http\Controllers\ProprietaireMaterielController;
+use App\Http\Controllers\MaterielController;
 
 use App\Http\Controllers\ReservationController;
 use App\Livewire\Utilisateurs;
@@ -37,13 +40,30 @@ Route::get('/home_admin', function (){
     return view('home_admin');
 })-> name('home_admin');
 
+
+
 Route::get("/ges_reservation", [ReservationController::class, "index"]);
 
-Route::get("/reservation/materiel", [ReservationController::class, "store"]);
+//Route::resource("/ges_reservation", TypeMaterielController::class);
 
+Route::resource("/reservation/materiel", MaterielController::class);
+
+
+
+Route::resource('typeMateriel', TypeMaterielController::class);// Route pour afficher le formulaire de modification
+Route::get('typeMateriel/{id}/edit', [TypeMaterielController::class, 'edit'])->name('typeMateriel.edit');
+
+// Route pour mettre à jour le type de matériel
+Route::put('typeMateriel/{id}', [TypeMaterielController::class, 'update'])->name('typeMateriel.update');
+
+Route::resource('proprietaireMateriel', ProprietaireMaterielController::class);
 // Route::get("/prendre_mat/{ref}", [ReservationController::class, "prendre_mat"]);
 
 
+Route::resource('materiel', MaterielController::class);
+
+
+Route::resource('reservation', ReservationController::class);
 
 
 // Route::get('/about', function () {

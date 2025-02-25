@@ -20,6 +20,23 @@ class DatabaseSeeder extends Seeder
          $this->call(RolesHasPermissionsTableSeeder::class);
           $this->call(ModelHasRoleTableSeeder::class);
 
+          // Appeler le seeder TypeMaterielSeeder
+            $this->call(TypeMaterielSeeder::class);
+            $this->call([ProprietaireMaterielSeeder::class]);
+            $this->call([
+                MaterielSeeder::class,
+            ]);
+            $this->call([
+                ProprieteMaterielSeeder::class,
+            ]);
+            $this->call([
+                StatutReservationSeeder::class,
+            ]);
+
+            // $this->call([
+            //     ReservationSeeder::class,
+            // ]);
+
 
 
         // \App\Models\User::factory()->create([

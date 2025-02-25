@@ -1,18 +1,18 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TypeMateriel extends Model
+class ProprieteMateriel extends Model
 {
     use HasFactory;
-
-    protected $fillable = ['nom', 'description'];
+    protected $fillable = ['materiel_id', 'propriete', 'valeur'];
 
     // Relation avec Materiel
-    public function materiels()
+    public function materiel()
     {
-        return $this->hasMany(Materiel::class);
+        return $this->belongsTo(Materiel::class);
     }
 }
