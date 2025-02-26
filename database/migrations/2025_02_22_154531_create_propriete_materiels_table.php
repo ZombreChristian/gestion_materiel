@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('type_materiels', function (Blueprint $table) {
+        Schema::create('propriete_materiels', function (Blueprint $table) {
             $table->id();
-            $table->string("nom");
-            $table->text('description')->nullable();
+            $table->foreignId('materiel_id')->constrained('materiels')->onDelete('cascade');
+            $table->string('propriete');
+            $table->string('valeur');
             $table->timestamps();
         });
     }
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('type_materiels');
+        Schema::dropIfExists('propriete_materiels');
     }
 };

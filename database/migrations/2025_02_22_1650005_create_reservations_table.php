@@ -13,13 +13,12 @@ return new class extends Migration
     {
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_user');
-            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
-            $table->string('reference');
-            $table->string('periode');
-            $table->date('date_reser');
-            $table->string('statut')->default('reserver');
-            $table->text('commentaire');
+            $table->foreignId('materiel_id')->constrained('materiels')->onDelete('cascade');
+            $table->foreignId('statut_reservation_id')->constrained('statut_reservations')->onDelete('cascade');
+            $table->foreignId('duree_reservation_id')->constrained('duree_reservations')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Clé étrangère vers la table users
+            $table->dateTime('date_reservation');
+            $table->text('commentaire')->nullable();
             $table->timestamps();
         });
     }
