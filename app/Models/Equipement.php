@@ -9,6 +9,6 @@ class Equipement extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nom', 'utilisation', 'reservations', 'annulations'];
+    protected $fillable = ['nom', 'nombre','utilisation', 'reservations', 'annulations'];
 }
 

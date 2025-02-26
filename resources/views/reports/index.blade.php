@@ -1,4 +1,3 @@
-
 @extends('layouts.master')
 
 @section('contenu')
@@ -19,14 +18,20 @@
                         <thead>
                             <tr>
                                 <th>Équipement</th>
+                                <th>Nombre</th>
                                 <th>Utilisation (%)</th>
+                                <th>Réservations</th>
+                                <th>Annulations</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($equipements as $equipement)
                                 <tr>
                                     <td>{{ $equipement->nom }}</td>
+                                    <td>{{ $equipement->nombre }}</td>
                                     <td>{{ $equipement->utilisation }}%</td>
+                                    <td>{{ $equipement->reservations }}</td>
+                                    <td>{{ $equipement->annulations }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -45,7 +50,7 @@
                     <h3 class="card-title">Équipement le plus utilisé</h3>
                 </div>
                 <div class="card-body">
-                    <h4 class="text-center">{{ $mostUsedEquipment }}</h4>
+                    <h4 class="text-center">{{ $mostUsedEquipment->nom }}</h4>
                 </div>
             </div>
         </div>
@@ -116,16 +121,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>2024-02-15</td>
-                                <td>Oscilloscope</td>
-                                <td>Panne technique</td>
-                            </tr>
-                            <tr>
-                                <td>2024-02-16</td>
-                                <td>Ordinateur</td>
-                                <td>Problème d’accès</td>
-                            </tr>
+                            @foreach ($equipements as $equipement)
+                                @if ($equipement->annulations > 0)
+                                    <tr>
+                                        <td>{{ now()->format('Y-m-d') }}</td>
+                                        <td>{{ $equipement->nom }}</td>
+                                        <td>Annulation fréquente</td>
+                                    </tr>
+                                @endif
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -182,9 +186,9 @@
         new Chart(reservationCtx, {
             type: "doughnut",
             data: {
-                labels: ["Réservé", "Disponible"],
+                labels: ["Réservé", "Annulé"],
                 datasets: [{
-                    data: [70, 30], // A remplacer par des valeurs dynamiques
+                    data: [{{ $totalReservations - $totalAnnulations }}, {{ $totalAnnulations }}],
                     backgroundColor: ["#28a745", "#dc3545"]
                 }]
             }

@@ -18,22 +18,43 @@ class ReportController extends Controller
      */
     public function index()
     {
-        // Récupérer les équipements sous-utilisés (utilisation < 20%)
-        $suggestions = Equipement::where('utilisation', '<', 20)->get();
 
         // Récupérer tous les équipements
         $equipements = Equipement::all();
 
+        // Récupérer les équipements sous-utilisés (utilisation < 20%)
+        $suggestions = Equipement::where('utilisation', '<', 20)->get();
+
+
+
+        foreach ($equipements as $equipement) {
+            echo $equipement->nombre; // Affiche le nombre d'équipements
+        }
+
+        // Calculer le taux de réservation global
+        $totalReservations = $equipements->sum('reservations');
+        $nombre = $equipements->sum('nombre');
+        $totalAnnulations = $equipements->sum('annulations');
+        $tauxReservation = ($totalReservations - $totalAnnulations) / $totalReservations * 100;
+
         // Récupérer l'équipement le plus utilisé
-        $mostUsedEquipment = Equipement::orderBy('utilisation', 'desc')->first()->nom ?? 'Aucun';
+        $mostUsedEquipment = Equipement::orderBy('utilisation', 'desc')->first();
+        // Si aucun équipement n'est trouvé, définissez une valeur par défaut
+if (!$mostUsedEquipment) {
+    $mostUsedEquipment = (object) ['nom' => 'Aucun équipement trouvé'];
+}
 
        // dd($equipements, $suggestions, $mostUsedEquipment);
 
         // Retourner la vue avec les données
         return view('reports.index', [
             'equipements' => $equipements,
+            'nombre' => $nombre,
             'mostUsedEquipment' => $mostUsedEquipment,
             'suggestions' => $suggestions,
+            'tauxReservation'=>$tauxReservation,
+            'totalAnnulations'=>$totalAnnulations,
+            'totalReservations'=>$totalReservations,
         ]);
 
 
