@@ -107,7 +107,7 @@
                 Anything you want
             </div>
 
-            <strong>Copyright &copy; 2022-2023 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
+            <strong>Copyright &copy; 2022-2023 </strong> All rights reserved.
         </footer>
         </div>
 

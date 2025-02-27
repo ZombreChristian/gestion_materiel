@@ -26,14 +26,26 @@
         <thead>
             <tr>
                 <th>Équipement</th>
+                <th>Nombre</th>
                 <th>Utilisation (%)</th>
+                <th>Reservations</th>
+                <th>Anulation</th>
+                <th>Équipement sous-utiliser</th>
+                <th>Équipement le plus utiliser</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($equipements as $equipement)
                 <tr>
                     <td>{{ $equipement->nom }}</td>
+                    <td>{{ $equipement->nombre }}</td>
                     <td>{{ $equipement->utilisation }}</td>
+                    <td>{{ $equipement->reservations }}</td>
+                    <td>{{ $equipement->annulations }}</td>
+                    <td>{{ $mostUsedEquipment->nom}}</td>
+                    <td>{{ $suggestion->utilisation}}</td>
+
+
                 </tr>
             @endforeach
         </tbody>

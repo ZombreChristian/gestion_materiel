@@ -10212,7 +10212,7 @@ input[type="button"].btn-block {
   flex-direction: column;
   align-items: flex-start;
   justify-content: center; }
-  
+
   .btn-group-vertical > .btn,
   .fc .btn-group-vertical > .fc-button,
   .swal2-modal .swal2-actions .btn-group-vertical > button,
@@ -23885,7 +23885,7 @@ select {
   @media (min-width: 992px) {
     .chat-wrapper .chat-aside {
       padding-right: 23px; } }
-  .chat-wrapper .chat-aside .aside-body .nav-tabs .nav-item a {
+  .chat-wrapper .chat-aside . .nav-tabs .nav-item a {
     color: #000;
     -webkit-transition: color .2s ease-in-out;
     transition: color .2s ease-in-out; }

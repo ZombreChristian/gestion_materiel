@@ -30,6 +30,8 @@ use App\Http\Controllers\MaterielController;
 use App\Http\Controllers\ReservationController;
 use App\Livewire\Utilisateurs;
 
+use App\Http\Controllers\DashboardController;
+
 
 
 Route::get('/', function () {
@@ -64,6 +66,7 @@ Route::resource("/reservation/materiel", MaterielController::class);
 
 
 
+
 Route::resource('typeMateriel', TypeMaterielController::class);// Route pour afficher le formulaire de modification
 Route::get('typeMateriel/{id}/edit', [TypeMaterielController::class, 'edit'])->name('typeMateriel.edit');
 
@@ -95,12 +98,15 @@ Route::get('/dashboard', [AdminController::class, 'dashboard'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
+
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/reports/generate', [ReportController::class, 'generate'])->name('reports.generate');
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+
 // Route pour exporter en PDF
 Route::get('/export-pdf', [ReportController::class, 'exportPdf'])->name('exportPdf');
 Route::get('/export-excel', [ReportController::class, 'exportExcel'])->name('exportExcel');
-Route::get('/equipements', [EquipementController::class, 'index'])->name('equipements.index');
+//Route::get('/equipements', [EquipementController::class, 'index'])->name('equipements.index');
 Route::get('/reports/data', [ReportController::class, 'getReportsData'])->name('reports.data');
 Route::get('/equipments/data', [ReportController::class, 'getEquipmentsData'])->name('equipments.data');
 
