@@ -20,7 +20,8 @@ class TypeMaterielFactory extends Factory
     public function definition(): array
     {
         return [
-            "nom" => array_rand(["Scanners", "Projecteurs", "Imprimates", "Ordinateurs"], 1)
+            'nom' => $this->faker->word, // Génère un mot aléatoire
+            'description' => $this->faker->sentence, // Génère une phrase aléatoire
         ];
     }
 }

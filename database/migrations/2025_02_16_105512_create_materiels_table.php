@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('materiels', function (Blueprint $table) {
             $table->id();
-            $table->string("nom")->unique();
-            $table->string("noSerie")->unique();
+            $table->string("nom");
             $table->string("imageUrl")->nullable();
-            $table->boolean("estDisponible")->default(1);
-            $table->foreignId("type_materiels_id")->constrained();
+            $table->boolean("estMutualisable")->default(0);
+            $table->foreignId('type_materiel_id')->constrained('type_materiels')->onDelete('cascade');
+            $table->foreignId('proprietaire_materiel_id')->constrained('proprietaire_materiels')->onDelete('cascade');
+            $table->text('description')->nullable();
+            $table->date('date_acquisition');
             $table->timestamps();
         });
         Schema::enableForeignKeyConstraints();

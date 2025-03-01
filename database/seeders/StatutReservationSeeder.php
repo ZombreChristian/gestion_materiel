@@ -13,7 +13,7 @@ class StatutReservationSeeder extends Seeder
      */
     public function run(): void
     {
-        
+
         DB::table("statut_reservations")->insert([
             ["nom"=>"En attente"],
             ["nom"=>"En cours"],

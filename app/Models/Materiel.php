@@ -9,28 +9,34 @@ class Materiel extends Model
 {
     use HasFactory;
 
-    public $fillable = [
-        "nom", "noSerie", "type_materiels_id", "imageUrl"
-    ];
+    protected $fillable = ['nom', 'imageUrl', 'estMutualisable', 'type_materiel_id', 'proprietaire_materiel_id', 'description', 'date_acquisition'];
 
-
-    public function type(){
-        return $this->belongsTo(TypeMateriel::class, "type_materiels_id", "id");
+    // Relation avec TypeMateriel
+    public function typeMateriel()
+    {
+        return $this->belongsTo(TypeMateriel::class);
     }
 
-    // public function tarifications(){
-    //     return $this->hasMany(Tarification::class);
+    // Relation avec ProprietaireMateriel
+    public function proprietaireMateriel()
+    {
+        return $this->belongsTo(ProprietaireMateriel::class);
+    }
+
+    // Relation avec ProprieteMateriel
+    public function proprietes()
+    {
+        return $this->hasMany(ProprieteMateriel::class);
+    }
+
+    // Relation avec Reservation
+    // public function reservations()
+    // {
+    //     return $this->hasMany(Reservation::class);
     // }
-
-    public function reservations(){
-        return $this->belongsToMany(Reservation::class,"materiel_reservation", "materiel_id", "reservation_id");
-    }
-
-    public function proprietaires(){
-        return $this->belongsToMany(ProprietaireMateriel::class,"materiel_proprietaire", "materiel_id", "proprietaire_materiel_id");
-    }
-
-    public function materiels_proprietaires(){
-        return $this->hasMany(MaterielProprietaire::class);
+    // Relation avec Reservation (many-to-many)
+    public function reservations()
+    {
+        return $this->belongsToMany(Reservation::class, 'materiel_reservation');
     }
 }
