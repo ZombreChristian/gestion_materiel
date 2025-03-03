@@ -36,9 +36,13 @@ Route::get('/contact', function (){
     return view('contact');
 })-> name('contact');
 
-Route::get('/home_admin', function (){
-    return view('home_admin');
-})-> name('home_admin');
+// Route::get('/home_admin', function (){
+//     return view('home_admin');
+
+// })-> name('home_admin');
+
+Route::get("/home_admin", [AdminController::class, "indexUser"])-> name('home_admin');
+
 
 
 
@@ -51,10 +55,12 @@ Route::resource("/reservation/materiel", MaterielController::class);
 
 
 Route::resource('typeMateriel', TypeMaterielController::class);// Route pour afficher le formulaire de modification
-Route::get('typeMateriel/{id}/edit', [TypeMaterielController::class, 'edit'])->name('typeMateriel.edit');
+//Route::get('typeMateriel/{id}/edit', [TypeMaterielController::class, 'edit'])->name('typeMateriel.edit');
+Route::get('/typeMateriel/{id}/edit', [TypeMaterielController::class, 'edit'])->name('typeMateriel.edit');
+Route::put('/typeMateriel/{id}', [TypeMaterielController::class, 'update'])->name('typeMateriel.update');
 
 // Route pour mettre à jour le type de matériel
-Route::put('typeMateriel/{id}', [TypeMaterielController::class, 'update'])->name('typeMateriel.update');
+//Route::put('typeMateriel/{id}', [TypeMaterielController::class, 'update'])->name('typeMateriel.update');
 
 Route::resource('proprietaireMateriel', ProprietaireMaterielController::class);
 // Route::get("/prendre_mat/{ref}", [ReservationController::class, "prendre_mat"]);
@@ -65,6 +71,7 @@ Route::resource('materiel', MaterielController::class);
 
 Route::resource('reservation', ReservationController::class);
 
+Route::get('/mes-reservations', [ReservationController::class, 'indexUser'])->name('reservation.indexuser');
 
 // Route::get('/about', function () {
 //     return 'Aboute page';

@@ -12,9 +12,9 @@ class TypeMaterielController extends Controller
     public function index()
     {
          // Paginer les types de matériel (10 éléments par page)
-         $types = TypeMateriel::paginate(10);
+         $typesmat = TypeMateriel::paginate(10);
         //$types = TypeMateriel::all();
-        return view('livewire.typeMateriel.index', compact('types'));
+        return view('livewire.typeMateriel.index', compact('typesmat'));
     }
 
     // Afficher le formulaire de création
@@ -43,23 +43,27 @@ class TypeMaterielController extends Controller
     }
 
     // Afficher le formulaire d'édition
-    public function edit(TypeMateriel $typeMateriel)
+    public function edit( $id)
     {
+        $typeMateriel = TypeMateriel::findOrFail($id);
         return view('livewire.typeMateriel.edit', compact('typeMateriel'));
     }
 
     // Mettre à jour un type de matériel
-    public function update(Request $request, TypeMateriel $typeMateriel)
+    public function update(Request $request, $id)
     {
+        $typeMateriel = TypeMateriel::findOrFail($id);
+        
         $request->validate([
             'nom' => 'required|string|max:100',
             'description' => 'nullable|string',
         ]);
-        
+    
         $typeMateriel->update($request->all());
-
+    
         return redirect()->route('typeMateriel.index')->with('success', 'Type de matériel mis à jour avec succès.');
     }
+    
 
     // Supprimer un type de matériel
     public function destroy(TypeMateriel $typeMateriel)

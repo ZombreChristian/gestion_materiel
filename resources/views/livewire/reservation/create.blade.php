@@ -22,7 +22,8 @@
             </select>
         </div>
 
-        <div class="form-group">
+        <!-- Champ Statut caché mais présent dans le formulaire -->
+        <div class="form-group" style="display: none;">
             <label for="statut_reservation_id">Statut</label>
             <select name="statut_reservation_id" id="statut_reservation_id" class="form-control" required>
                 @foreach($statuts as $statut)
@@ -89,19 +90,20 @@
         border-radius: 20px;
         cursor: pointer;
     }
-    .btn-group {
-    display: flex;
-    justify-content: flex-end; /* Aligner les boutons à droite */
-    gap: 30px; /* Espacement entre les boutons */
-    }
 
+    .btn-group {
+        display: flex;
+        justify-content: flex-end; /* Aligner les boutons à droite */
+        gap: 30px; /* Espacement entre les boutons */
+    }
 
     .btn-primary {
         background-color: #007bff;
         color: white;
     }
-    .btn-secondary{
-        background-color:rgb(255, 0, 0);
+
+    .btn-secondary {
+        background-color: rgb(255, 0, 0);
         justify-content: right;
         color: white;
     }

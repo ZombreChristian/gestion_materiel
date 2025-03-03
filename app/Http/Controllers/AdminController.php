@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-use App\Models\Cotisation;
+use App\Models\TypeMateriel;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -22,13 +22,22 @@ class AdminController extends Controller
         return view('admin.index');
     }
 
+    public function indexUser(){
+
+        // return view('home_admin');
+
+         $types = TypeMateriel::paginate(10);
+        //$types = TypeMateriel::all();
+        return view('livewire.typeMateriel.index', compact('types'));
+    }
+
 
 
     public function dashboard(Request $request)
 {
 
     return view('dashboard');
-    // return view('admin.admin_profile_view',compact('profileData'));
+    // return view('admin.admin_profile_view',compact('profileData')); indexUser
 
 }
 

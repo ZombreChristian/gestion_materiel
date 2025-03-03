@@ -22,6 +22,12 @@ class ReservationController extends Controller
         return view('livewire.reservation.index', compact('reservations'));
         //return view("ges_reservation" ,  compact("reservations"));
     }
+    public function indexUser()
+{
+    $reservations = Reservation::where('user_id', auth()->id())->paginate(10);
+    return view('livewire.reservation.indexuser', compact('reservations'));
+}
+
 
     // Afficher le formulaire de création
     public function create()

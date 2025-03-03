@@ -1,20 +1,15 @@
 <!DOCTYPE html>
-
+<html lang="fr">
 <head>
-    <title>home-user</title>
-
-    @include('include.head_link')
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des Types de Matériel</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 </head>
-
-<body class="animsition">
-
-    <div class="page-wrapper">
-
-        @include('include.sidebar_admin')
-
-        <div class="page-container2">
-        <div class="container py-4">
+<body>
+    <div class="container py-4">
         <div class="card">
             <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                 <h3 class="card-title"><i class="fas fa-tools fa-2x"></i> Liste des Types de Matériel</h3>
@@ -97,6 +92,7 @@
             </div>
         </div>
     </div>
+
     <!-- Modale Ajouter -->
     <div class="modal fade" id="addModal" tabindex="-1">
         <div class="modal-dialog modal-lg">
@@ -121,12 +117,5 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-
-        </div>
-    </div>
-
-
-    @include('include.foot_link')
 </body>
-
 </html>
