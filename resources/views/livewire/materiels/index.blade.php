@@ -3,7 +3,7 @@
 
 
 @section('contenu')
-@include("livewire.typeMateriel.liste")
+@include("livewire.materiels.liste")
 
 @endsection
 

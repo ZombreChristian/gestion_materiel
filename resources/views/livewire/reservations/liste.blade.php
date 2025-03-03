@@ -4,13 +4,13 @@
           <div class="col-12">
             <div class="card">
               <div class="card-header bg-gradient-primary d-flex align-items-center">
-                <h3 class="card-title flex-grow-1"><i class="fas fa-users fa-2x"></i> Liste des membres</h3>
+                <h3 class="card-title flex-grow-1"><i class="fas fa-list fa-2x"></i> Liste des réservations</h3>
 
                 <div class="card-tools d-flex align-items-center ">
                 {{-- <a class="btn btn-link text-white mr-4 d-block" wire:click.prevent="goToAddUser()"><i class="fas fa-user-plus"></i> Nouvel utilisateur</a> --}}
 
                 <button type="button" class="btn btn-link text-white mr-4 d-block" data-toggle="modal" data-target="#bd-example-modal-xl">
-                    <i class="fas fa-user-plus"></i> Nouveau membre
+                    <i class="fas fa-user-plus"></i> Nouvel réservation
                 </button>
 
                 {{-- <button type="button" class="btn btn-info" data-toggle="modal" data-target=".bd-example-modal-lg">
@@ -39,15 +39,17 @@
                   <thead>
                     <tr>
                       <th style="width:5%;">Photo</th>
-                      <th style="width:25%;">Nom/Prenom</th>
-                      <th style="width:25%;">Montant</th>
+                      <th style="width:15%;">Nom</th>
+                      <th style="width:5%;">Durée</th>
+                      <th style="width:5%;">Statut</th>
+                      <th style="width:25%;">équipement</th>
 
                       <th style="width:20%;" class="text-center">Ajouté</th>
-                      <th style="width:30%;" >Action</th>
+                      <th style="width:25%;" >Action</th>
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach($etudiants as $key => $item)
+                    @foreach($reservations as $key => $item)
 
                     <tr>
                       <td>
@@ -136,7 +138,7 @@
               <!-- /.card-body -->
               <div class="card-footer">
                 <div class="float-right">
-                    {{ $etudiants->links('pagination::bootstrap-4') }}
+                    {{ $reservations->links('pagination::bootstrap-4') }}
                 </div>
               </div>
             </div>
@@ -157,7 +159,7 @@
                                     <div class="col-md-12 grid-margin stretch-card">
                                         <div class="card">
                                             <div class=" card-body">
-                                                @include("livewire.membres.create")
+                                                @include("livewire.reservations.create")
 
 
                                             </div>

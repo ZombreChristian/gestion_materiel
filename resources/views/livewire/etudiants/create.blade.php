@@ -3,7 +3,7 @@
             <!-- general form elements -->
             <div class="card card-primary">
                 <div class="card-header">
-                  <h3 class="card-title"><i class="fas fa-user-plus fa-2x"></i> Formulaire de création d'un nouveau membre</h3>
+                  <h3 class="card-title"><i class="fas fa-user-plus fa-2x"></i> Formulaire de création d'un nouveau délégué</h3>
                 </div>
                 <!-- /.card-header -->
                 <!-- form start -->
@@ -42,27 +42,7 @@
                           </div>
                       </div>
 
-                    {{-- <div class="d-flex">
-                        <div class="form-group flex-grow-1 mr-2">
-                            <label >Sexe</label>
-                            <select class="form-control @error('sexe') is-invalid @enderror" name="sexe" >
-                                <option value="">---------</option>
-                                <option value="M">Homme</option>
-                                <option value="F">Femme</option>
-                            </select>
-                            @error("sexe")
-                                        <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                          </div>
 
-                          <div class="form-group flex-grow-1">
-                            <label >Adresse email</label>
-                            <input type="text" class="form-control @error('email') is-invalid @enderror" name="email">
-                            @error("email")
-                                        <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                          </div>
-                    </div> --}}
 
                      <div class="row">
                         <div class="col-4">
@@ -90,13 +70,13 @@
 
                         <div class="col-4">
                             <div class="form-group">
-                                <label >Montant à emprunter</label>
+                                <label >INE</label>
                                 <div class="input-group">
 
                                     <input type="number" class="form-control @error('montant') is-invalid @enderror" name="montant">
-                                    <div class="input-group-prepend">
+                                    {{-- <div class="input-group-prepend">
                                         <span class="input-group-text">F CFA</span>
-                                    </div>
+                                    </div> --}}
                                 </div>
                                 @error("montant")
                                             <span class="text-danger">{{ $message }}</span>

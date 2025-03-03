@@ -97,8 +97,8 @@
     {{--  --}}
 
 
-    <li class="nav-item {{ setMenuClass('admin.membres', 'menu-open') }}">
-        <a href="#" class="nav-link {{ setMenuClass('admin.membres', 'active') }}">
+    <li class="nav-item {{ setMenuClass('etudiants', 'menu-open') }}">
+        <a href="#" class="nav-link {{ setMenuClass('etudiants', 'active') }}">
             <i class="nav-icon fas fa-circle"></i>
             <p>
            Gestion étudiants
@@ -109,7 +109,7 @@
         <ul class="nav nav-treeview">
 
                 <li class="nav-item">
-                    <a href="{{route('admin.membres.all.membre')}}" class="nav-link {{ setMenuActive('admin.membres.all.membre') }}">
+                    <a href="{{route('etudiants.all.etudiant')}}" class="nav-link {{ setMenuActive('etudiants.all.etudiant') }}">
 
                     <i class="far fa-dot-circle nav-icon"></i>
                     <p>Etudiants</p>
@@ -117,8 +117,8 @@
                 </li>
         </ul>
     </li>
-    <li class="nav-item {{ setMenuClass('admin.membres', 'menu-open') }}">
-        <a href="#" class="nav-link {{ setMenuClass('admin.membres', 'active') }}">
+    <li class="nav-item {{ setMenuClass('equipements', 'menu-open') }}">
+        <a href="#" class="nav-link {{ setMenuClass('equipements', 'active') }}">
             <i class="nav-icon fas fa-circle"></i>
             <p>
            Gestion équipements
@@ -129,17 +129,24 @@
         <ul class="nav nav-treeview">
 
                 <li class="nav-item">
-                    <a href="{{route('admin.membres.all.membre')}}" class="nav-link {{ setMenuActive('admin.membres.all.membre') }}">
+                    <a href="{{route('equipements.all.equipement')}}" class="nav-link {{ setMenuActive('equipements.all.equipement') }}">
 
                     <i class="far fa-dot-circle nav-icon"></i>
                     <p>équipements</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{route('equipements.all.type')}}" class="nav-link {{ setMenuActive('equipements.all.type') }}">
+
+                    <i class="far fa-dot-circle nav-icon"></i>
+                    <p>Type d'équipement</p>
+                    </a>
+                </li>
         </ul>
     </li>
 
-    <li class="nav-item {{ setMenuClass('admin.membres', 'menu-open') }}">
-        <a href="#" class="nav-link {{ setMenuClass('admin.membres', 'active') }}">
+    <li class="nav-item {{ setMenuClass('reservations', 'menu-open') }}">
+        <a href="#" class="nav-link {{ setMenuClass('reservations', 'active') }}">
             <i class="nav-icon fas fa-circle"></i>
             <p>
            Gestion Reservations
@@ -150,7 +157,7 @@
         <ul class="nav nav-treeview">
 
                 <li class="nav-item">
-                    <a href="{{route('admin.membres.all.membre')}}" class="nav-link {{ setMenuActive('admin.membres.all.membre') }}">
+                    <a href="{{route('reservations.all.reservation')}}" class="nav-link {{ setMenuActive('reservations.all.reservation') }}">
 
                     <i class="far fa-dot-circle nav-icon"></i>
                     <p>Reservations</p>

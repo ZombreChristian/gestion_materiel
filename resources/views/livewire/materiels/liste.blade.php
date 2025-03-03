@@ -4,13 +4,13 @@
           <div class="col-12">
             <div class="card">
               <div class="card-header bg-gradient-primary d-flex align-items-center">
-                <h3 class="card-title flex-grow-1"><i class="fas fa-users fa-2x"></i> Liste des membres</h3>
+                <h3 class="card-title flex-grow-1"><i class="fas fa-list fa-2x"></i> Liste des équipements</h3>
 
                 <div class="card-tools d-flex align-items-center ">
                 {{-- <a class="btn btn-link text-white mr-4 d-block" wire:click.prevent="goToAddUser()"><i class="fas fa-user-plus"></i> Nouvel utilisateur</a> --}}
 
                 <button type="button" class="btn btn-link text-white mr-4 d-block" data-toggle="modal" data-target="#bd-example-modal-xl">
-                    <i class="fas fa-user-plus"></i> Nouveau membre
+                    <i class="fas fa-user-plus"></i> Nouveau matériel
                 </button>
 
                 {{-- <button type="button" class="btn btn-info" data-toggle="modal" data-target=".bd-example-modal-lg">
@@ -38,16 +38,17 @@
                 <table class="table table-head-fixed">
                   <thead>
                     <tr>
-                      <th style="width:5%;">Photo</th>
-                      <th style="width:25%;">Nom/Prenom</th>
-                      <th style="width:25%;">Montant</th>
+                        <th style="width:5%;"></th>
+                      <th style="width:45%;">Materiel</th>
+                      <th style="width:15%;">Type</th>
+                      <th style="width:15%;">Etat</th>
 
-                      <th style="width:20%;" class="text-center">Ajouté</th>
-                      <th style="width:30%;" >Action</th>
+                      <th style="width:10%;" class="text-center">Ajouté</th>
+                      <th style="width:10%;" >Action</th>
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach($etudiants as $key => $item)
+                    @foreach($materiels as $key => $item)
 
                     <tr>
                       <td>
@@ -136,7 +137,7 @@
               <!-- /.card-body -->
               <div class="card-footer">
                 <div class="float-right">
-                    {{ $etudiants->links('pagination::bootstrap-4') }}
+                    {{ $materiels->links('pagination::bootstrap-4') }}
                 </div>
               </div>
             </div>
@@ -148,16 +149,16 @@
             <ol class="breadcrumb">
 
                 <!--  modale -->
-                <div class="modal fade bd-example-modal-xl" id="bd-example-modal-xl"  tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+                <div class="modal fade bd-example-modal-lg" id="bd-example-modal-xl"  tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
                     aria-hidden="true">
-                    <div class="modal-dialog modal-xl" role="document">
+                    <div class="modal-dialog modal-lg" role="document">
                         <div class="modal-content">
                             <div class="modal-body">
                                 <div class="row">
                                     <div class="col-md-12 grid-margin stretch-card">
                                         <div class="card">
                                             <div class=" card-body">
-                                                @include("livewire.membres.create")
+                                                @include("livewire.materiels.create")
 
 
                                             </div>

@@ -1,23 +1,21 @@
 <?php
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\View;
 use App\Http\Controllers\AdminController;
 
 use App\Http\Livewire\TypeMaterielComp;
 use App\Http\Controllers\Backend\RoleController;
-
-
 use App\Http\Controllers\PdfgenerateController;
-
-
 use App\Http\Controllers\MembreController;
-use App\Http\Controllers\TypeMaterielController;
+use App\Http\Controllers\admin\EtudiantController;
+// use App\Http\Controllers\TypeMaterielController;
 use App\Http\Controllers\ProprietaireMaterielController;
-use App\Http\Controllers\MaterielController;
+use App\Http\Controllers\admin\MaterielController;
 
-use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\admin\ReservationController;
+use App\Http\Controllers\admin\TypeMaterielController;
 use App\Livewire\Utilisateurs;
-
-
+use App\Models\Etudiant;
 
 Route::get('/', function () {
     return view('index');
@@ -52,43 +50,26 @@ Route::resource("/reservation/materiel", MaterielController::class);
 
 
 Route::resource('typeMateriel', TypeMaterielController::class);// Route pour afficher le formulaire de modification
-Route::get('typeMateriel/{id}/edit', [TypeMaterielController::class, 'edit'])->name('typeMateriel.edit');
+// Route::get('typeMateriel/{id}/edit', [TypeMaterielController::class, 'edit'])->name('typeMateriel.edit');
 
 // Route pour mettre à jour le type de matériel
-Route::put('typeMateriel/{id}', [TypeMaterielController::class, 'update'])->name('typeMateriel.update');
+// Route::put('typeMateriel/{id}', [TypeMaterielController::class, 'update'])->name('typeMateriel.update');
 
 Route::resource('proprietaireMateriel', ProprietaireMaterielController::class);
 // Route::get("/prendre_mat/{ref}", [ReservationController::class, "prendre_mat"]);
 
 
-Route::resource('materiel', MaterielController::class);
-
 
 Route::resource('reservation', ReservationController::class);
 
 
-// Route::get('/about', function () {
-//     return 'Aboute page';
-// });
-
-
-
-
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/dashboard', [AdminController::class, 'dashboard'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
-// Route::middleware('auth')->group(function () {
-//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-// });
 
-Route::get('/logout', [AdminController::class, 'AdminLogout'])->name('logout');
+Route::get('/logoute', [AdminController::class, 'AdminLogout'])->name('logoute');
 
 Route::middleware('auth')->group(function () {
 Route::get('/profile', [AdminController::class, 'AdminProfile'])->name('profile');
@@ -110,41 +91,8 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
 
 //------------------------------------------------------------------
 
-
-//------------------------------------------------------------------
-
-
-
 }); // end groupe Admin Middleware
 
-
-// Route::get("/membres", Membre::class)->name("membres.index");
-// // Route::get("/cotisations", Cotisation::class)->name("cotisations.index");
-// Route::get('/cotisations', [CotisationController::class, 'render'])->name('cotisations.index');
-// Route::post('/store/cotisations', [CotisationController::class, 'storeCotisation'])->name('store.cotisation');
-
-
-
-
-// ----------------------------------------------------------------------------
-
-// Route::middleware(['auth', 'roles:admin'])->group(function () {
-//     // admin create users
-//     Route::controller(AdminController::class)->group(function(){
-//         Route::get('/all/admin','AllAdmin')->name('all.admin');
-//         Route::get('/add/admin','AddAdmin')->name('add.admin');
-//         Route::post('/store/admin','StoreAdmin')->name('store.admin');
-//         Route::get('/edit/admin/{id}','EditAdmin')->name('edit.admin');
-//         Route::post('/update/admin/{id}','UpdateAdmin')->name('update.admin');
-//         Route::get('/delete/admin/{id}','DeleteAdmin')->name('delete.admin');
-//     });
-
-// });
-
-// ----------------------------------
-
-
-// -----------------------------------------------------------------------------------------------
 
 Route::group([
     // "middleware" => ["auth", "auth.admin"],
@@ -172,9 +120,6 @@ Route::group([
             Route::post('/update/roles','UpdateRole')->name('update.roles');
             Route::get('/delete/roles/{id}','DeleteRole')->name('delete.roles');
 
-
-            //
-
             Route::get('/all/permission','AllPermission')->name('all.permission');
             Route::get('/add/permission','AddPermission')->name('add.permission');
             Route::post('/store/permission','StorePermission')->name('store.permission');
@@ -197,55 +142,14 @@ Route::group([
 
     });
 
-    // Route::get("/membres", Membre::class)->name("membres.index");
-    // // Route::get("/cotisations", Cotisation::class)->name("cotisations.index");
-    // Route::get('/cotisations', [CotisationController::class, 'render'])->name('cotisations.index');
-    // Route::post('/store/cotisations', [CotisationController::class, 'storeCotisation'])->name('store.cotisation');
-
-
-    Route::group([
-        "prefix" => "membres",
-        'as' => 'membres.'
-    ], function(){
-
-        Route::controller(MembreController::class)->group(function(){
-
-            Route::get('/all','AllMembre')->name('all.membre');
-            // Route::get('/add/Patient','AddMembre')->name('add.membre');
-            Route::post('/store','StoreMembre')->name('store.membre');
-            Route::post('/update','UpdateMembre')->name('update.membre');
-            Route::get('/delete/{id}','DeleteMembre')->name('delete.membre');
-
-            Route::get('/search','Search')->name('cherche.membre');
-            Route::get('/filter','Filter')->name('filter.membre');
-
-
-
-
-
-        });
-    });
-
-
 });
 // ------------------------------------------------------------------------------------------
-
-
 
 // Route::get('/generate-pdf','PdfgenrateController@generatePDF');->middleware('permission:test1')
 Route::get('/generate-pdf',    [PdfgenerateController::class, 'generatePDF'])->name('pdf');
 
-
-
 Route::get('/telecharger-pdf/{id}',  [PdfgenerateController::class, 'telechargerPdf'])->name('telecharger.pdf');
 
-
-
-// Route::get('/telecharger-pdf/{id}', 'BonController@telechargerPdf')->name('telecharger.pdf');
-
-
-
-// Le groupe des routes relatives aux administrateurs uniquement
 Route::group([
     // "middleware" => ["auth", "auth.admin"],
     'as' => 'admin.'
@@ -261,24 +165,88 @@ Route::group([
 });
 
 
+Route::group([
+    "prefix" => "etudiants",
+    'as' => 'etudiants.'
+], function(){
+
+    Route::controller(EtudiantController::class)->group(function(){
+
+        Route::get('/all','AllEtudiant')->name('all.etudiant');
+        // Route::get('/add/Patient','AddMembre')->name('add.membre');
+        Route::post('/store','StoreMembre')->name('store.etudiant');
+        Route::post('/update','UpdateMembre')->name('update.etudiant');
+        Route::get('/delete/{id}','DeleteMembre')->name('delete.etudiant');
+
+        Route::get('/search','Search')->name('cherche.etudiant');
+        Route::get('/filter','Filter')->name('filter.etudiant');
+
+
+    });
+});
+
+Route::group([
+    "prefix" => "equipements",
+    'as' => 'equipements.'
+], function(){
+
+    Route::controller(MaterielController::class)->group(function(){
+
+        Route::get('/all_equipement','AllEtudiant')->name('all.equipement');
+        // Route::get('/add/Patient','AddMembre')->name('add.membre');
+        Route::post('/store_equipement','StoreMembre')->name('store.equipement');
+        Route::post('/update_equipement','UpdateMembre')->name('update.equipement');
+        Route::get('/delete_equipement/{id}','DeleteMembre')->name('delete.equipement');
+
+        Route::controller(TypeMaterielController::class)->group(function(){
+            Route::get('/all_type','AllEtudiant')->name('all.type');
+            // Route::get('/add/Patient','AddMembre')->name('add.membre');
+            Route::post('/store_type','StoreMembre')->name('store.type');
+            Route::post('/update_type','UpdateMembre')->name('update.type');
+            Route::get('/delete_type/{id}','DeleteMembre')->name('delete.type');
+
+        });
 
 
 
 
 
+    });
+});
 
 
-// Route::get("/membres", Membre::class)->name("membres.index");
-// // Route::get("/cotisations", Cotisation::class)->name("cotisations.index");
-// Route::get('/cotisations', [App\Livewire\Cotisation::class, 'render'])->name('cotisations.index');
-// Route::post('/store/cotisations', [App\Livewire\Cotisation::class, 'storeCotisation'])->name('store.cotisation');
+Route::group([
+    "prefix" => "reservations",
+    'as' => 'reservations.'
+], function(){
+
+    Route::controller(ReservationController::class)->group(function(){
+
+        Route::get('/all_reservation','AllEtudiant')->name('all.reservation');
+        // Route::get('/add/Patient','AddMembre')->name('add.membre');
+        Route::post('/store_reservation','StoreMembre')->name('store.reservation');
+        Route::post('/update_reservation','UpdateMembre')->name('update.reservation');
+        Route::get('/delete_reservation/{id}','DeleteMembre')->name('delete.reservation');
+
+    });
 
 
 
+});
 
 
-// Routes moto
+// Route::group([
+//     "prefix" => "typesMateriels",
+//     'as' => 'typesMateriels.'
+// ], function(){
 
+//     Route::controller(TypeMaterielController::class)->group(function(){
+//         Route::get('/all_type','AllEtudiant')->name('all.type');
+//         // Route::get('/add/Patient','AddMembre')->name('add.membre');
+//         Route::post('/store_type','StoreMembre')->name('store.type');
+//         Route::post('/update_type','UpdateMembre')->name('update.type');
+//         Route::get('/delete_type/{id}','DeleteMembre')->name('delete.type');
 
-// Routes vehicule
+//     });
+// });
 

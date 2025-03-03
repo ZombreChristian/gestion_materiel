@@ -2,12 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\Cotisation;
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Membre extends Model
+class Etudiant extends Model
 {
     use HasFactory;
 
@@ -29,6 +27,4 @@ class Membre extends Model
 
 
     ];
-
-    
 }
