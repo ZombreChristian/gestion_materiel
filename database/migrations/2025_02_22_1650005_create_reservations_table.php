@@ -14,13 +14,16 @@ return new class extends Migration
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('materiel_id')->constrained('materiels')->onDelete('cascade');
-            $table->foreignId('statut_reservation_id')->constrained('statut_reservations')->onDelete('cascade');
-            $table->foreignId('duree_reservation_id')->constrained('duree_reservations')->onDelete('cascade');
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Clé étrangère vers la table users
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->dateTime('date_reservation');
             $table->text('commentaire')->nullable();
+            $table->enum('statut', ['En attente', 'Confirmée', 'Annulée', 'Terminée'])->default('En attente');
+            $table->dateTime('dateDebut');
+            $table->dateTime('dateFin');
             $table->timestamps();
         });
+
+
     }
 
     /**
@@ -28,9 +31,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table("reservationscls
-        ", function(Blueprint $table){
-            $table->dropForeign(['id_user']);
+        Schema::table('reservations', function (Blueprint $table) {
+            $table->dropForeign('materiel_id');
+            $table->dropForeign('user_id');
         });
         Schema::dropIfExists('reservations');
     }

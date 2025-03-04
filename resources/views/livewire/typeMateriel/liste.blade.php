@@ -1,25 +1,27 @@
 {{-- @include('livewire.membres.filter') --}}
 
+@extends('layouts.master')
+@section('contenu')
 <div class="row p-4 pt-5">
           <div class="col-12">
             <div class="card">
               <div class="card-header bg-gradient-primary d-flex align-items-center">
-                <h3 class="card-title flex-grow-1"><i class="fas fa-list fa-2x"></i> Liste des types de materiels</h3>
+                <h3 class="card-title flex-grow-1"><i class="fas fa-list fa-2x"></i> Liste des types de matériels</h3>
 
                 <div class="card-tools d-flex align-items-center ">
                 {{-- <a class="btn btn-link text-white mr-4 d-block" wire:click.prevent="goToAddUser()"><i class="fas fa-user-plus"></i> Nouvel utilisateur</a> --}}
 
-                <button type="button" class="btn btn-link text-white mr-4 d-block" data-toggle="modal" data-target="#bd-example-modal-xl">
-                    <i class="fas fa-user-plus"></i> Nouveau type
+                <button type="button" class="btn btn-link text-white mr-4 d-block" data-toggle="modal" data-target="#exampleModal">
+                    <i class="fas fa-plus"></i> Nouvel type
                 </button>
 
                 {{-- <button type="button" class="btn btn-info" data-toggle="modal" data-target=".bd-example-modal-lg">
                     <i class="fas fa-plus"></i>Ajouter Arme
                 </button>--}}
                   <div class="input-group input-group-md" >
-                   <form method="get" action="#">
+                   <form method="get" action="#{{--route('admin.membres.cherche.membre')--}}">
                        <div class="input-group">
-                        <input type="text" name="search" class="form-control float-right" placeholder="Search" value="{{ request('search') }}">
+                        <input type="text" name="search" class="form-control float-right" placeholder="Search" value="">
 
                         <div class="input-group-append">
                             <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
@@ -38,32 +40,17 @@
                 <table class="table table-head-fixed">
                   <thead>
                     <tr>
-
-                      <th style="width:50%;">Type de matériel</th>
-
-                      <th style="width:20%;" class="text-center">Ajouté</th>
-                      <th style="width:30%;" >Action</th>
+                        <th>Id#</th>
+                        <th>Nom du type</th>
+                        <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach($types as $key => $item)
+                    @foreach ($types as $key => $item )
+                                <tr>
+                                    <td>{{$key + 1}}</td>
+                                    <td>{{$item->nom}}</td>
 
-                    <tr>
-                      <td>
-                        @if($item->sexe == "F")
-                            <img src="{{asset('images/woman.png')}}" width="24"/>
-                        @else
-                            <img src="{{asset('images/man.png')}}" width="24"/>
-                        @endif
-                      </td>
-                      <td>{{ $item->nom }} {{ $item->prenom }} </td>
-                      <td>{{ $item->montant }}<span>F CFA</span></td>
-
-                      <td class="text-center"><span class="tag tag-success">@if ($item->created_at)
-                        {{ $item->created_at->diffForHumans() }}
-                    @else
-                        Date inconnue
-                    @endif</span></td>
 
                       <td>
 
@@ -84,7 +71,7 @@
                                     <div class="modal-body">
                                         <div class="card">
                                             <div class="card-body">
-                                                @include("livewire.membres.edit")
+                                                @include("livewire.typeMateriel.edit")
 
 
                                             </div>
@@ -97,8 +84,9 @@
 
 
 
-                        <a href="{{route('admin.membres.delete.membre',$item->id)}}" class="btn btn-danger"
+                        <a href="{{route('equipements.delete.type',$item->id)}}" class="btn btn-danger"
                             id="delete"><i class="far fa-trash-alt"></i></a>
+
 
                              <!-- affiché plus de detail -->
                              <button type="button" class="btn btn-info " data-toggle="modal"data-target="#allModal{{$item->id}}">
@@ -115,7 +103,7 @@
                                         <div class="card">
                                             <div class="card-body">
 
-                                                @include("livewire.membres.info")
+                                                {{-- @include("livewire.typeMateriel.info") --}}
 
                                             </div>
                                         </div>
@@ -147,16 +135,16 @@
             <ol class="breadcrumb">
 
                 <!--  modale -->
-                <div class="modal fade bd-example-modal-xl" id="bd-example-modal-xl"  tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+                <div class="modal fade exampleModal" id="exampleModal"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
                     aria-hidden="true">
-                    <div class="modal-dialog modal-xl" role="document">
+                    <div class="modal-dialog exampleModal" role="document">
                         <div class="modal-content">
                             <div class="modal-body">
                                 <div class="row">
                                     <div class="col-md-12 grid-margin stretch-card">
                                         <div class="card">
                                             <div class=" card-body">
-                                                @include("livewire.membres.create")
+                                                @include("livewire.typeMateriel.create")
 
 
                                             </div>
@@ -179,5 +167,5 @@
 
 
 
-
+@endsection
 

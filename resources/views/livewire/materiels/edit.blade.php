@@ -8,7 +8,7 @@
                 </div>
                 <!-- /.card-header -->
                 <!-- form start -->
-                <form method="POST" action="{{route('admin.membres.update.membre')}}" class="forms-sample" enctype="multipart/form-data">
+                <form method="POST" action="{{route('equipements.update.equipement')}}" class="forms-sample" enctype="multipart/form-data">
                   @csrf
                   <input type="hidden" name="id" value="{{$item->id}}">
                     <div class="card-body">

@@ -12,7 +12,7 @@ class TypeMateriel extends Model
     protected $fillable = ["nom"];
 
     public function materiels(){
-        return $this->hasMany(Materiel::class);
+        return $this->hasMany(Materiel::class,'type_materiel_id');
     }
 
     public function proprietaires(){

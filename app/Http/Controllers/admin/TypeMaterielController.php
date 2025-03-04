@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Etudiant;
+use App\Models\TypeMateriel;
 use App\Models\Membre;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -14,10 +14,10 @@ class TypeMaterielController extends Controller
     use WithPagination;
     protected $paginationTheme = "bootstrap";
 
-    public function AllEtudiant(){
+    public function AllType(){
 
         Carbon::setLocale("fr");
-        $types = Membre::latest()->paginate(25);
+        $types = TypeMateriel::latest()->paginate(25);
 
 
 
@@ -25,224 +25,80 @@ class TypeMaterielController extends Controller
 
      }
 
-    // public function Search(Request $request){
-    //     $search= $request->search;
-    //     $Etudiants= Etudiant::where(function($query) use ($search){
-    //         $query->where('nom','like',"%$search%")
-    //         ->orwhere('prenom','like',"%$search%")
-    //         ->orwhere('sexe','like',"%$search%")
-    //         ->orwhere('dateNaissance','like',"%$search%");
-
-
-    //     })
-
-    //     // ->orwhereHas('category',function($query) use ($search){
-    //     //     $query->where('name','like',"%$search%");
-    //     // })
-    //     ->paginate(5);
-    //     return view('livewire.Etudiants.index', compact('Etudiants','search'));
-
-
-    // }
-
-    public function Search(Request $request){
-        $search = $request->search;
-        $Etudiants = Etudiant::where(function($query) use ($search){
-            $query->where('nom','like',"%$search%")
-                ->orWhere('prenom','like',"%$search%")
-                ->orWhere('sexe','like',"%$search%")
-                ->orWhere('dateNaissance','like',"%$search%");
-        })
-        ->paginate(20);
-
-        // Vérifier si la recherche n'a retourné aucun résultat
-        if ($Etudiants->isEmpty()) {
-            session()->flash('message', 'Aucun résultat trouvé pour votre recherche.');
-        }
-
-        return view('livewire.Etudiants.index', compact('Etudiants','search'));
-    }
-
-    public function Filter(Request $request){
-        $nom = $request->nom;
-        $sexe = $request->sexe;
-        $prenom = $request->prenom;
-        $dateNaissance = $request->dateNaissance;
-        $telephone1 = $request->telephone1;
-
-        $Etudiants = Etudiant::where(function($query) use ($nom, $sexe, $prenom,$dateNaissance,$telephone1){
-            if ($nom) {
-                $query->where('nom', 'like', "%$nom%");
-            }
-
-            if ($sexe) {
-                $query->where('sexe', 'like', "%$sexe%");
-            }
-            if ($prenom) {
-                $query->where('prenom', 'like', "%$prenom%");
-            }
-
-            if ($dateNaissance) {
-                $query->where('dateNaissance', 'like', "%$dateNaissance%");
-            }
-            if ($telephone1) {
-                $query->where('telephone1', 'like', "%$telephone1%");
-            }
-        })
-        ->paginate(20);
-
-        // Vérifier si la recherche n'a retourné aucun résultat
-        if ($Etudiants->isEmpty()) {
-            session()->flash('message', 'Aucun résultat trouvé pour votre recherche.');
-        }
-
-        // Rediriger vers l'index sans les paramètres de recherche
-        return view('livewire.Etudiants.index', compact('nom','sexe','Etudiants'));
-    }
-
-
-
-
-
-
-
-    //  public function AddEtudiant(){
-    //     return view('backend.Etudiant.add_Etudiants');
+   
+    // public function AddRole(){
+    //     return view('backend.pages.roles.add_roles');
     //  }
 
-     public function StoreEtudiant(Request $request){
-        // Validation
-        $request->validate ([
+     public function StoreType(Request $request){
 
-
+         // Validation
+         $request->validate ([
             'nom'=>'required',
-            'prenom'=>'required',
-            'sexe'=>'required',
-            'pieceIdentite'=>'required',
-            'noPieceIdentite'=>'required',
-            'telephone1'=>'required',
-            'pays'=>'required',
-
-            'dateNaissance'=>'required',
-            'ville'=>'required',
-            'lieuNaissance'=>'required',
-            'adresse'=>'required',
-            'montant'=>'required',
-
-            // 'password'=>'required',
-
 
         ]);
-
-
-
-        Etudiant:: insert([
-        'nom'=> $request->nom,
-        'prenom'=> $request->prenom,
-        'sexe'=> $request->sexe,
-        'dateNaissance'=> $request->dateNaissance,
-        'lieuNaissance'=> $request->lieuNaissance,
-        'nationalite'=> $request->nationalite,
-        'ville'=> $request->ville,
-        'pays'=> $request->pays,
-        'pieceIdentite'=> $request->pieceIdentite,
-        'adresse'=> $request->adresse,
-        'noPieceIdentite'=>$request->noPieceIdentite,
-        'telephone1'=> $request->telephone1,
-        'telephone2'=> $request->telephone2,
-        'email'=> $request->email,
-        'montant'=> $request->montant,
-
-        // 'password'=> $request->password,
-
-
-
+        $types = TypeMateriel::create([
+            'nom' => $request->nom,
         ]);
-
 
         $notification = array(
-            'message' => 'Etudiant a été créé avec succès',
+            'message' => 'Type Create Successfully',
             'alert-type' => 'success'
         );
 
 
-        return redirect()->route('admin.Etudiants.all.Etudiant')->with($notification);
-
+        // return redirect()->route('all.type')->with($notification);
+        return redirect()->route('equipements.all.type')->with($notification);
 
     }
 
-    // public function EditEtudiant($id){
-    //     $Etudiants = Etudiant::findOrFail($id);
-    //     return view('backend.Etudiant.edit_Etudiants',compact('Etudiants'));
+    // public function EditType($id){
+    //     $roles = TypeMateriel::findOrFail($id);
+    //     return view('backend.pages.roles.edit_roles',compact('roles'));
     //  }
 
-     public function UpdateEtudiant(Request $request){
+     public function UpdateType(Request $request){
 
         $pid =$request->id;
 
-        $request->validate ([
-
-            'nom'=>'required',
-            'prenom'=>'required',
-            'sexe'=>'required',
-            'pieceIdentite'=>'required',
-            'noPieceIdentite'=>'required',
-            'telephone1'=>'required',
-            'pays'=>'required',
-
-            'dateNaissance'=>'required',
-            'ville'=>'required',
-            'lieuNaissance'=>'required',
-            'adresse'=>'required',
-            'montant'=>'required',
+         // Validation
+         $request->validate ([
+            'nom'=>'required|unique:type_Materiels',
 
         ]);
 
-
-        Etudiant::findOrFail($pid)->update([
+        TypeMateriel:: findOrFail($pid)->update([
             'nom'=> $request->nom,
-            'prenom'=> $request->prenom,
-            'sexe'=> $request->sexe,
-            'dateNaissance'=> $request->dateNaissance,
-            'lieuNaissance'=> $request->lieuNaissance,
-            'nationalite'=> $request->nationalite,
-            'ville'=> $request->ville,
-            'pays'=> $request->pays,
-            'pieceIdentite'=> $request->pieceIdentite,
-            'adresse'=> $request->adresse,
-            'noPieceIdentite'=>$request->noPieceIdentite,
-            'telephone1'=> $request->telephone1,
-            'telephone2'=> $request->telephone2,
-            'email'=> $request->email,
-            'montant'=> $request->montant,
+
 
         ]);
 
         $notification = array(
-            'message' => 'Etudiant a été modifié avec succès',
+            'message' => 'Type Update Successfully',
             'alert-type' => 'success'
         );
 
 
-        // return redirect()->route('all.Arme')->with($notification);
-        return redirect()->route('admin.Etudiants.all.Etudiant')->with($notification);
+        // return redirect()->route('all.type')->with($notification);
+        return redirect()->route('equipements.all.type')->with($notification);
 
 
     }
 
-    public function DeleteEtudiant($id){
 
-        Etudiant:: findOrFail($id)->delete();
+    public function DeleteType($id){
+
+        TypeMateriel::findOrFail($id)->delete();
 
 
         $notification = array(
-            'message' => 'Etudiant a été supprimé avec succès',
+            'message' => 'Type delete Successfully',
             'alert-type' => 'success'
         );
 
 
-        // return redirect()->route('all.Arme')->with($notification);
-        return redirect()->route('admin.Etudiants.all.Etudiant')->with($notification);
+        // return redirect()->route('all.type')->with($notification);
+        return redirect()->route('equipements.all.type')->with($notification);
 
     }
 }

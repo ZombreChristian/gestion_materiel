@@ -3,7 +3,6 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 use App\Http\Controllers\AdminController;
 
-use App\Http\Livewire\TypeMaterielComp;
 use App\Http\Controllers\Backend\RoleController;
 use App\Http\Controllers\PdfgenerateController;
 use App\Http\Controllers\MembreController;
@@ -192,19 +191,19 @@ Route::group([
 
     Route::controller(MaterielController::class)->group(function(){
 
-        Route::get('/all_equipement','AllEtudiant')->name('all.equipement');
+        Route::get('/all_equipement','AllMateriel')->name('all.equipement');
         // Route::get('/add/Patient','AddMembre')->name('add.membre');
-        Route::post('/store_equipement','StoreMembre')->name('store.equipement');
-        Route::post('/update_equipement','UpdateMembre')->name('update.equipement');
-        Route::get('/delete_equipement/{id}','DeleteMembre')->name('delete.equipement');
+        Route::post('/store_equipement','StoreMateriel')->name('store.equipement');
+        Route::post('/update_equipement','UpdateMateriel')->name('update.equipement');
+        Route::get('/delete_equipement/{id}','DeleteMateriel')->name('delete.equipement');
 
         Route::controller(TypeMaterielController::class)->group(function(){
-            Route::get('/all_type','AllEtudiant')->name('all.type');
-            // Route::get('/add/Patient','AddMembre')->name('add.membre');
-            Route::post('/store_type','StoreMembre')->name('store.type');
-            Route::post('/update_type','UpdateMembre')->name('update.type');
-            Route::get('/delete_type/{id}','DeleteMembre')->name('delete.type');
+            Route::get('/all_type','AllType')->name('all.type');
+            Route::post('/store_type','StoreType')->name('store.type');
+            Route::post('/update_type','UpdateType')->name('update.type');
+            Route::get('/delete_type/{id}','DeleteType')->name('delete.type');
 
+           
         });
 
 

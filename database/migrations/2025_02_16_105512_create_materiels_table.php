@@ -18,15 +18,16 @@ return new class extends Migration
             $table->string("imageUrl")->nullable();
             $table->boolean("estMutualisable")->default(0);
             $table->foreignId('type_materiel_id')->constrained('type_materiels')->onDelete('cascade');
-            $table->foreignId('proprietaire_materiel_id')->constrained('proprietaire_materiels')->onDelete('cascade');
+            // $table->foreignId('proprietaire_materiel_id')->constrained('proprietaire_materiels')->onDelete('cascade');
             $table->text('description')->nullable();
-            $table->date('date_acquisition');
-            $table->date('estDisponible');
+            $table->date('date_acquisition')->nullable();
+            $table->boolean("estDisponible")->default(1);
+
 
 
             $table->timestamps();
         });
-        Schema::enableForeignKeyConstraints();
+       
     }
 
     /**

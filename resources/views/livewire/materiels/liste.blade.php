@@ -38,34 +38,48 @@
                 <table class="table table-head-fixed">
                   <thead>
                     <tr>
-                        <th style="width:5%;"></th>
-                      <th style="width:45%;">Materiel</th>
-                      <th style="width:15%;">Type</th>
-                      <th style="width:15%;">Etat</th>
+                        <th>Numéro #</th>
+                        <th >Image</th>
+                      <th >Nom</th>
 
-                      <th style="width:10%;" class="text-center">Ajouté</th>
-                      <th style="width:10%;" >Action</th>
+                      <th >Type</th>
+                      <th >Ajouté</th>
+                      <th >Etat</th>
+
+                      {{-- <th style="width:10%;" class="text-center">Ajouté</th> --}}
+                      <th  >Action</th>
                     </tr>
                   </thead>
                   <tbody>
                     @foreach($materiels as $key => $item)
 
                     <tr>
-                      <td>
-                        @if($item->sexe == "F")
-                            <img src="{{asset('images/woman.png')}}" width="24"/>
-                        @else
-                            <img src="{{asset('images/man.png')}}" width="24"/>
-                        @endif
-                      </td>
-                      <td>{{ $item->nom }} {{ $item->prenom }} </td>
-                      <td>{{ $item->montant }}<span>F CFA</span></td>
+                        <td>{{$key +1}}</td>
+                        <td>
+                            <img src="/storage/materiels/{{$item->imageUrl}}" alt="imageUrl" style="width: 40px; height: 40px; border-radius: 45%; object-fit: cover;">
+                        </td>
 
+                      <td>{{ $item->nom }} {{ $item->prenom }} </td>
+                      <td>
+                        @if($item ->typeMateriels)
+                        {{$item ->typeMateriels->nom}}
+                    @else
+                        RAS
+                    @endif
+                     </td>
                       <td class="text-center"><span class="tag tag-success">@if ($item->created_at)
                         {{ $item->created_at->diffForHumans() }}
                     @else
                         Date inconnue
                     @endif</span></td>
+                    <td>
+                        @if ($item->estDisponible == 1)
+                        <label class="badge badge-success">Disponible</label>
+                        @else
+                        <label class="badge badge-danger">Indisponible</label>
+
+                        @endif
+                    </td>
 
                       <td>
 
@@ -86,7 +100,7 @@
                                     <div class="modal-body">
                                         <div class="card">
                                             <div class="card-body">
-                                                @include("livewire.membres.edit")
+                                                @include("livewire.materiels.edit")
 
 
                                             </div>
@@ -99,7 +113,7 @@
 
 
 
-                        <a href="{{route('admin.membres.delete.membre',$item->id)}}" class="btn btn-danger"
+                        <a href="{{route('equipements.delete.equipement',$item->id)}}" class="btn btn-danger"
                             id="delete"><i class="far fa-trash-alt"></i></a>
 
                              <!-- affiché plus de detail -->
@@ -117,7 +131,7 @@
                                         <div class="card">
                                             <div class="card-body">
 
-                                                @include("livewire.membres.info")
+                                                @include("livewire.materiels.info")
 
                                             </div>
                                         </div>

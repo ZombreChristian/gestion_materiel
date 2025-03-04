@@ -1,97 +1,93 @@
 {{-- <div class="row p-4 pt-5">
             <div class="col-md-6"> --}}
-            <!-- general form elements -->
-            <div class="card card-primary">
-                <div class="card-header">
-                  <h3 class="card-title"><i class="fas fa-user-plus fa-2x"></i> Formulaire de réservation</h3>
-                </div>
-                <!-- /.card-header -->
-                <!-- form start -->
-                <form method="POST" action="{{route('etudiants.store.etudiant')}}" class="forms-sample" enctype="multipart/form-data">
-                  @csrf
-                    <div class="card-body">
-                      <div class="d-flex">
-                          <div class="form-group flex-grow-1 mr-2">
-                              <label >Nom</label>
-                              <input type="text" name="nom" class="form-control @error('nom') is-invalid @enderror" name="nom" placeholder="KAFANDO">
+<!-- general form elements -->
+<div class="card card-primary">
+    <div class="card-header">
+        <h3 class="card-title"><i class="fas fa-user-plus fa-2x"></i> Formulaire d'ajout de reservation</h3>
+    </div>
+    <!-- /.card-header -->
+    <!-- form start -->
+    <form method="POST" action="{{ route('equipements.store.equipement') }}" class="forms-sample" enctype="multipart/form-data">
+        @csrf
+        <div class="card-body">
+            <div class="d-flex">
 
-                              @error("nom")
-                                  <span class="text-danger">{{ $message }}</span>
-                              @enderror
-                          </div>
-                          <div class="form-group flex-grow-1 mr-2">
-                              <label >Prenom</label>
-                              <input type="text" name="prenom" class="form-control @error('prenom') is-invalid @enderror" name="prenom" placeholder="Moussa">
+                <div class="my-4 bg-gray-light p-3 flex-grow-1">
 
-                              @error("prenom")
-                                  <span class="text-danger">{{ $message }}</span>
-                              @enderror
-                          </div>
-
-                          <div class="form-group flex-grow-1  ">
-                            <label >Piece d'identité</label>
-                            <select class="form-control @error('pieceIdentite') is-invalid @enderror" name="pieceIdentite">
-                                <option value="">---------</option>
-                                <option value="CNIB">CNIB</option>
-                                <option value="PASSPORT">PASSPORT</option>
-                                <option value="PERMIS DE CONDUIRE">PERMIS DE CONDUIRE</option>
-                            </select>
-                            @error("pieceIdentite")
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                          </div>
-                      </div>
-
-                    
-
-
-
-
-                      <div class="d-flex">
-                        <div class="form-group flex-grow-1 mr-2">
-                            <label for="exampleInputPassword1">Date de naissance</label>
-                            <input type="date" class="form-control @error('dateNaissance') is-invalid @enderror" name="dateNaissance">
-                            @error("dateNaissance")
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        <div class="form-group flex-grow-1 mr-2">
-                            <label >Lieu de naissance</label>
-                            <input type="text" class="form-control" @error('lieuNaissance') is-invalid @enderror name="lieuNaissance" placeholder="Ouagadougou">
-                            @error("lieuNaissance")
+                    <div class="form-group">
+                        <label>Nom du materiel</label>
+                        <input type="text" name="nom" class="form-control @error('nom') is-invalid @enderror" placeholder="Nom du materiel">
+                        @error('nom')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
-                        </div>
-                        <div class="form-group flex-grow-1 ">
-                            <label for="exampleInputPassword1">Adresse</label>
-                            <input type="text" class="form-control @error('adresse') is-invalid @enderror" name="adresse" placeholder="secteur 12 Boulmiougou">
-                            @error("adresse")
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
                     </div>
 
+                    <div class="form-group">
+                        <label>Numero de serie</label>
+                        <input type="text" name="noSerie" class="form-control @error('noSerie') is-invalid @enderror" placeholder="Numero du materiel">
+                        @error('noSerie')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
 
+                    <div class="form-group">
+                        <label>Type de materiel</label>
+                        <select name="type_materiel_id" class="form-control @error('type_materiel_id') is-invalid @enderror">
+                            <option selected>---------</option>
+                            @foreach ($materiels as $type)
+                                <option value="{{ $type->id }}">{{ $type->nom }}</option>
+                            @endforeach
+                        </select>
+                        @error('type_materiel_id')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
 
+                    <div class="form-group">
+                        <label>Etat</label>
+                        <select class="form-control @error('estDisponible') is-invalid @enderror" name="estDisponible">
+                            <option value="">---------</option>
+                            <option value="1">Disponible</option>
+                            <option value="0">Indisponible</option>
+                        </select>
+                        @error('estDisponible')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
 
+                <div class="p-4 d-flex flex-column align-items-center">
+                    <div class="form-group">
+                        <input type="file" id="imageUrl" name="imageUrl" class="form-control @error('imageUrl') is-invalid @enderror" onchange="previewImage(event)">
+                    </div>
+                    <div style="border: 1px solid #d0d1d3; border-radius: 20px; height: 300px; width:250px; overflow:hidden;">
+                        <img id="preview" src="" style="height:100%; width:100%; object-fit:cover;">
+                    </div>
+                </div>
 
+                <script>
+                    function previewImage(event) {
+                        var reader = new FileReader();
+                        reader.onload = function() {
+                            var output = document.getElementById('preview');
+                            output.src = reader.result;
+                        };
+                        reader.readAsDataURL(event.target.files[0]);
+                    }
+                </script>
 
-                  </div>
-                  <!-- /.card-body -->
+            </div>
+        </div>
+        <!-- /.card-body -->
 
-                  <div class="card-footer">
-                    <button type="submit" class="btn btn-success">Enregistrer</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">fermer</button>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-success">Enregistrer</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Fermer</button>
+        </div>
+    </form>
 
-                    {{-- <button type="button" wire:click="goToListUser()" class="btn btn-danger">Retouner à la liste des utilisateurs</button> --}}
-                  </div>
-                </form>
-              </div>
-              <!-- /.card -->
-  {{--
+</div>
+<!-- /.card -->
+{{--
             </div>
           </div> --}}
-
-
-
-

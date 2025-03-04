@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Etudiant;
-use App\Models\Membre;
+use App\Models\TypeMateriel;
+use App\Models\Materiel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
 use Livewire\WithPagination;
 
 class MaterielController extends Controller
@@ -14,235 +16,200 @@ class MaterielController extends Controller
     use WithPagination;
     protected $paginationTheme = "bootstrap";
 
-    public function AllEtudiant(){
+    public function AllMateriel(){
 
         Carbon::setLocale("fr");
-        $materiels = Membre::latest()->paginate(25);
+        $materiels = Materiel::latest()->paginate(25);
+        
 
+        $typesMateriel = TypeMateriel::all();
 
-
-        return view('livewire.materiels.index', compact('materiels'));
+        return view('livewire.materiels.index', compact('materiels','typesMateriel'));
 
      }
 
-    // public function Search(Request $request){
-    //     $search= $request->search;
-    //     $Etudiants= Etudiant::where(function($query) use ($search){
-    //         $query->where('nom','like',"%$search%")
-    //         ->orwhere('prenom','like',"%$search%")
-    //         ->orwhere('sexe','like',"%$search%")
-    //         ->orwhere('dateNaissance','like',"%$search%");
+
+     /**
+      * Show the form for creating a new resource.
+      */
+     public function create()
+     {
+         //
+         $categories= TypeMateriel::all();
+         return view('admin.ajouterproduit',compact('categories'));
+     }
+
+     /**
+      * Store a newly created resource in storage.
+      */
+      public function StoreMateriel(Request $request)
+      {
+        // dd($request->all());
+          $request->validate([
+              'imageUrl' => 'nullable|image|max:4999|mimes:png,jpg,jpeg,webp',
+              'type_materiel_id' => 'required',
+              'nom' => 'required|unique:materiels'
+          ]);
+
+          if ($request->hasFile('imageUrl')) { // RECUPERER l'image
+              $fileNameWithExt = $request->file('imageUrl')->getClientOriginalName();
+              $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+              // extraire l'extension de l'image
+              $extension = $request->file('imageUrl')->getClientOriginalExtension();
+              // générer un nom unique pour l'image
+              $filenameToStore = $fileName . '_' . time() . '.' . $extension;
+              // schema de stockage de l'image
+              $path = $request->file('imageUrl')->storeAs('public/materiels', $filenameToStore);
+          } else {
+              $filenameToStore = 'noimage.jpg';
+          }
 
 
-    //     })
+            $estDisponible = $request->has('estDisponible') ? $request->estDisponible : 1;
 
-    //     // ->orwhereHas('category',function($query) use ($search){
-    //     //     $query->where('name','like',"%$search%");
-    //     // })
-    //     ->paginate(5);
-    //     return view('livewire.Etudiants.index', compact('Etudiants','search'));
+          Materiel::create([
+              'nom' => $request->nom,
+              'noSerie' => $request->noSerie,
+              'date_acquisition' => $request->date_acquisition,
+              'description' => $request->description,
+              'imageUrl' => $filenameToStore,
+              'type_materiel_id' => $request->type_materiel_id,
+             'estDisponible' => $estDisponible,
+          ]);
+
+          $notification = array(
+              'message' => 'Materiel a été créé avec succès',
+              'alert-type' => 'success'
+          );
+
+          return redirect()->route('equipements.all.equipement')->with($notification);
+      }
 
 
-    // }
+     /**
+      * Display the specified resource.
+      */
+     public function show(string $id)
+     {
+         //
+     }
 
-    public function Search(Request $request){
-        $search = $request->search;
-        $Etudiants = Etudiant::where(function($query) use ($search){
-            $query->where('nom','like',"%$search%")
-                ->orWhere('prenom','like',"%$search%")
-                ->orWhere('sexe','like',"%$search%")
-                ->orWhere('dateNaissance','like',"%$search%");
-        })
-        ->paginate(20);
+     /**
+      * Show the form for editing the specified resource.
+      */
+     public function edit(string $id)
+     {
+         //
+         $produits = Materiel::findOrFail($id);
+         $categories= TypeMateriel::all();
 
-        // Vérifier si la recherche n'a retourné aucun résultat
-        if ($Etudiants->isEmpty()) {
-            session()->flash('message', 'Aucun résultat trouvé pour votre recherche.');
-        }
+         return view('admin.editproduit', compact('produits','categories'));
+     }
 
-        return view('livewire.Etudiants.index', compact('Etudiants','search'));
-    }
+     /**
+      * Update the specified resource in storage.
+      */
+     public function UpdateMateriel(Request $request)
+     {
+         $pid =$request->id;
+         $request->validate ([
+             'image'=>'image|nullable|max:1999|mimes:png,jpg,jpeg,webp',
+             'category'=>'required',
+             'nom'=>'required',
+             'prix'=>'required',
 
-    public function Filter(Request $request){
-        $nom = $request->nom;
-        $sexe = $request->sexe;
-        $prenom = $request->prenom;
-        $dateNaissance = $request->dateNaissance;
-        $telephone1 = $request->telephone1;
+         ]);
+         $produit = Materiel::findOrFail($pid);
 
-        $Etudiants = Etudiant::where(function($query) use ($nom, $sexe, $prenom,$dateNaissance,$telephone1){
-            if ($nom) {
-                $query->where('nom', 'like', "%$nom%");
+         if($request->has('image')){ // RECUPERER l'image
+             $fileNameWithExt = $request->file('image')->getClientOriginalName();
+             $fileName = pathinfo($fileNameWithExt,PATHINFO_FILENAME);
+             // extraire l'extension de l'image
+             $extension = $request->file('image')->getClientOriginalExtension();
+              // générer un nom unique pour l'image
+             $filenameToStore = $fileName.'_'.time().'.'.$extension;
+             // schema de stockage de l'image
+             $path = $request->file('image')->storeAs('public/produits',$filenameToStore);
+             // $file->move($path, $filename);
+                 if ($produit->image != 'noimage.jpg') {
+                     Storage::delete('public/produits/'.$produit->image);
+                 }
+
+                 $produit->image = $filenameToStore;
+             }
+
+
+         $produit->update([
+             'nom' => $request->nom,
+             'prix' => $request->prix,
+             'category' => $request->category,
+         ]);
+
+         $notification = array(
+             'message' => 'Produit a été modifié avec succès',
+             'alert-type' => 'success'
+         );
+
+
+         return redirect()->route('equipements.all.equipement')->with($notification);
+      }
+
+     /**
+      * Remove the specified resource from storage.
+      */
+     public function DeleteMateriel(string $id){
+         //
+
+             $produit = Materiel::findOrFail($id);
+             if ($produit->image != 'noimage.jpg') {
+                 Storage::delete('public/produits/'.$produit->image);
+             }
+
+             $produit->delete();
+
+             $notification = array(
+                 'message' => 'Produit a été supprimé avec succès',
+                 'alert-type' => 'success'
+             );
+
+
+             return redirect()->route('equipements.all.equipement')->with($notification);
             }
 
-            if ($sexe) {
-                $query->where('sexe', 'like', "%$sexe%");
-            }
-            if ($prenom) {
-                $query->where('prenom', 'like', "%$prenom%");
-            }
-
-            if ($dateNaissance) {
-                $query->where('dateNaissance', 'like', "%$dateNaissance%");
-            }
-            if ($telephone1) {
-                $query->where('telephone1', 'like', "%$telephone1%");
-            }
-        })
-        ->paginate(20);
-
-        // Vérifier si la recherche n'a retourné aucun résultat
-        if ($Etudiants->isEmpty()) {
-            session()->flash('message', 'Aucun résultat trouvé pour votre recherche.');
-        }
-
-        // Rediriger vers l'index sans les paramètres de recherche
-        return view('livewire.Etudiants.index', compact('nom','sexe','Etudiants'));
-    }
 
 
+         public function activerProduit($id){
+             //
+
+                 $produit = Materiel::findOrFail($id);
+                 $produit->status = 1;
+
+                 $produit->update();
+
+                 $notification = array(
+                     'message' => 'Produit '. $produit->nom.' a été activé avec succès',
+                     'alert-type' => 'success'
+                 );
 
 
+                 return redirect()->route('equipements.all.equipement')->with($notification);
+                }
+
+             public function desactiverProduit($id){
+                 //
+
+                     $produit = Materiel::findOrFail($id);
+                     $produit->status = 0;
+
+                     $produit->update();
+
+                     $notification = array(
+                         'message' => 'Produit '. $produit->nom. ' a été desactivé avec succès',
+                         'alert-type' => 'success'
+                     );
 
 
+                     return redirect()->route('listeproduit')->with($notification);
+                 }
 
-    //  public function AddEtudiant(){
-    //     return view('backend.Etudiant.add_Etudiants');
-    //  }
-
-     public function StoreEtudiant(Request $request){
-        // Validation
-        $request->validate ([
-
-
-            'nom'=>'required',
-            'prenom'=>'required',
-            'sexe'=>'required',
-            'pieceIdentite'=>'required',
-            'noPieceIdentite'=>'required',
-            'telephone1'=>'required',
-            'pays'=>'required',
-
-            'dateNaissance'=>'required',
-            'ville'=>'required',
-            'lieuNaissance'=>'required',
-            'adresse'=>'required',
-            'montant'=>'required',
-
-            // 'password'=>'required',
-
-
-        ]);
-
-
-
-        Etudiant:: insert([
-        'nom'=> $request->nom,
-        'prenom'=> $request->prenom,
-        'sexe'=> $request->sexe,
-        'dateNaissance'=> $request->dateNaissance,
-        'lieuNaissance'=> $request->lieuNaissance,
-        'nationalite'=> $request->nationalite,
-        'ville'=> $request->ville,
-        'pays'=> $request->pays,
-        'pieceIdentite'=> $request->pieceIdentite,
-        'adresse'=> $request->adresse,
-        'noPieceIdentite'=>$request->noPieceIdentite,
-        'telephone1'=> $request->telephone1,
-        'telephone2'=> $request->telephone2,
-        'email'=> $request->email,
-        'montant'=> $request->montant,
-
-        // 'password'=> $request->password,
-
-
-
-        ]);
-
-
-        $notification = array(
-            'message' => 'Etudiant a été créé avec succès',
-            'alert-type' => 'success'
-        );
-
-
-        return redirect()->route('admin.Etudiants.all.Etudiant')->with($notification);
-
-
-    }
-
-    // public function EditEtudiant($id){
-    //     $Etudiants = Etudiant::findOrFail($id);
-    //     return view('backend.Etudiant.edit_Etudiants',compact('Etudiants'));
-    //  }
-
-     public function UpdateEtudiant(Request $request){
-
-        $pid =$request->id;
-
-        $request->validate ([
-
-            'nom'=>'required',
-            'prenom'=>'required',
-            'sexe'=>'required',
-            'pieceIdentite'=>'required',
-            'noPieceIdentite'=>'required',
-            'telephone1'=>'required',
-            'pays'=>'required',
-
-            'dateNaissance'=>'required',
-            'ville'=>'required',
-            'lieuNaissance'=>'required',
-            'adresse'=>'required',
-            'montant'=>'required',
-
-        ]);
-
-
-        Etudiant::findOrFail($pid)->update([
-            'nom'=> $request->nom,
-            'prenom'=> $request->prenom,
-            'sexe'=> $request->sexe,
-            'dateNaissance'=> $request->dateNaissance,
-            'lieuNaissance'=> $request->lieuNaissance,
-            'nationalite'=> $request->nationalite,
-            'ville'=> $request->ville,
-            'pays'=> $request->pays,
-            'pieceIdentite'=> $request->pieceIdentite,
-            'adresse'=> $request->adresse,
-            'noPieceIdentite'=>$request->noPieceIdentite,
-            'telephone1'=> $request->telephone1,
-            'telephone2'=> $request->telephone2,
-            'email'=> $request->email,
-            'montant'=> $request->montant,
-
-        ]);
-
-        $notification = array(
-            'message' => 'Etudiant a été modifié avec succès',
-            'alert-type' => 'success'
-        );
-
-
-        // return redirect()->route('all.Arme')->with($notification);
-        return redirect()->route('admin.Etudiants.all.Etudiant')->with($notification);
-
-
-    }
-
-    public function DeleteEtudiant($id){
-
-        Etudiant:: findOrFail($id)->delete();
-
-
-        $notification = array(
-            'message' => 'Etudiant a été supprimé avec succès',
-            'alert-type' => 'success'
-        );
-
-
-        // return redirect()->route('all.Arme')->with($notification);
-        return redirect()->route('admin.Etudiants.all.Etudiant')->with($notification);
-
-    }
 }

@@ -4,13 +4,13 @@
           <div class="col-12">
             <div class="card">
               <div class="card-header bg-gradient-primary d-flex align-items-center">
-                <h3 class="card-title flex-grow-1"><i class="fas fa-list fa-2x"></i> Liste des réservations</h3>
+                <h3 class="card-title flex-grow-1"><i class="fas fa-list fa-2x"></i> Liste des équipements</h3>
 
                 <div class="card-tools d-flex align-items-center ">
                 {{-- <a class="btn btn-link text-white mr-4 d-block" wire:click.prevent="goToAddUser()"><i class="fas fa-user-plus"></i> Nouvel utilisateur</a> --}}
 
                 <button type="button" class="btn btn-link text-white mr-4 d-block" data-toggle="modal" data-target="#bd-example-modal-xl">
-                    <i class="fas fa-user-plus"></i> Nouvel réservation
+                    <i class="fas fa-user-plus"></i> Nouveau matériel
                 </button>
 
                 {{-- <button type="button" class="btn btn-info" data-toggle="modal" data-target=".bd-example-modal-lg">
@@ -38,35 +38,69 @@
                 <table class="table table-head-fixed">
                   <thead>
                     <tr>
-                      <th style="width:5%;">Photo</th>
-                      <th style="width:15%;">Nom</th>
-                      <th style="width:5%;">Durée</th>
-                      <th style="width:5%;">Statut</th>
-                      <th style="width:25%;">équipement</th>
+                        <th>Numéro #</th>
+                        <th >Image</th>
+                      <th >Nom</th>
 
-                      <th style="width:20%;" class="text-center">Ajouté</th>
-                      <th style="width:25%;" >Action</th>
+                      <th >Materiel</th>
+
+                      <th >Date début</th>
+                      <th >Date Fin</th>
+
+                      <th >Ajouté</th>
+                      <th >Etat</th>
+
+                      {{-- <th style="width:10%;" class="text-center">Ajouté</th> --}}
+                      <th  >Action</th>
                     </tr>
                   </thead>
                   <tbody>
                     @foreach($reservations as $key => $item)
 
                     <tr>
-                      <td>
-                        @if($item->sexe == "F")
-                            <img src="{{asset('images/woman.png')}}" width="24"/>
-                        @else
-                            <img src="{{asset('images/man.png')}}" width="24"/>
-                        @endif
-                      </td>
-                      <td>{{ $item->nom }} {{ $item->prenom }} </td>
-                      <td>{{ $item->montant }}<span>F CFA</span></td>
+                        <td>{{$key +1}}</td>
+                        <td>
+                            <img src="/storage/materiels/{{$item->materiel->imageUrl}}" alt="imageUrl" style="width: 40px; height: 40px; border-radius: 45%; object-fit: cover;">
+                        </td>
 
+                        <td>
+                            @if($item ->user)
+                            {{$item ->user->name}}
+                        @else
+                            RAS
+                        @endif
+                         </td>
+                      <td>
+                        @if($item ->materiel)
+                        {{$item ->materiel->nom}}
+                    @else
+                        RAS
+                    @endif
+                     </td>
+                     <td class="text-center"><span >{{($item->dateDebut)}}</span></td>
+                     <td class="text-center"><span >{{ ($item->dateFin)}}</span></td>
+
+                      {{-- <td>
+                        @if($item ->materiels)
+                        {{$item ->materiels->nom}}
+                    @else
+                        RAS
+                    @endif
+                     </td> --}}
                       <td class="text-center"><span class="tag tag-success">@if ($item->created_at)
                         {{ $item->created_at->diffForHumans() }}
                     @else
                         Date inconnue
                     @endif</span></td>
+
+                    <td>
+                        @if ($item->statut == "Confirmée" )
+                        <label class="badge badge-success">Confirmée</label>
+                        @else
+                        <label class="badge badge-warning">En attente</label>
+
+                        @endif
+                    </td>
 
                       <td>
 
@@ -87,7 +121,7 @@
                                     <div class="modal-body">
                                         <div class="card">
                                             <div class="card-body">
-                                                @include("livewire.membres.edit")
+                                                @include("livewire.materiels.edit")
 
 
                                             </div>
@@ -100,7 +134,7 @@
 
 
 
-                        <a href="{{route('admin.membres.delete.membre',$item->id)}}" class="btn btn-danger"
+                        <a href="{{route('equipements.delete.equipement',$item->id)}}" class="btn btn-danger"
                             id="delete"><i class="far fa-trash-alt"></i></a>
 
                              <!-- affiché plus de detail -->
@@ -118,7 +152,7 @@
                                         <div class="card">
                                             <div class="card-body">
 
-                                                @include("livewire.membres.info")
+                                                @include("livewire.materiels.info")
 
                                             </div>
                                         </div>
@@ -150,9 +184,9 @@
             <ol class="breadcrumb">
 
                 <!--  modale -->
-                <div class="modal fade bd-example-modal-xl" id="bd-example-modal-xl"  tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+                <div class="modal fade bd-example-modal-lg" id="bd-example-modal-xl"  tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
                     aria-hidden="true">
-                    <div class="modal-dialog modal-xl" role="document">
+                    <div class="modal-dialog modal-lg" role="document">
                         <div class="modal-content">
                             <div class="modal-body">
                                 <div class="row">

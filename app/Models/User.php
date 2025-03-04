@@ -23,6 +23,10 @@ class User extends Authenticatable
         'password',
     ];
 
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class,'user_id');
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -85,6 +89,8 @@ class User extends Authenticatable
  {
      return $this->belongsTo(Role::class, 'role_id');
  }
+
+
 
 
 //  public function hasRole($role){

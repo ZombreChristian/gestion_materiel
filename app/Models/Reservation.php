@@ -20,31 +20,16 @@ class Reservation extends Model
     ];
 
     // Relation avec Materiel
-    public function materiel()
-    {
-        return $this->belongsTo(Materiel::class);
-    }
 
      // Relation avec Materiel (many-to-many)
-     public function materiels()
+     public function materiel()
      {
-         return $this->belongsToMany(Materiel::class, 'materiel_reservation');
+         return $this->belongsTo(Materiel::class, 'materiel_id');
      }
-    // Relation avec StatutReservation
-    public function statutReservation()
-    {
-        return $this->belongsTo(StatutReservation::class);
-    }
-
-    // Relation avec DureeReservation
-    public function dureeReservation()
-    {
-        return $this->belongsTo(DureeReservation::class);
-    }
 
     // Relation avec User
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,'user_id');
     }
 }

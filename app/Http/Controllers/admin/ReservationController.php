@@ -4,7 +4,9 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Etudiant;
+use App\Models\Materiel;
 use App\Models\Membre;
+use App\Models\Reservation;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Livewire\WithPagination;
@@ -17,11 +19,15 @@ class ReservationController extends Controller
     public function AllEtudiant(){
 
         Carbon::setLocale("fr");
-        $reservations = Membre::latest()->paginate(25);
+
+        $reservations = Reservation::latest()->paginate(10);
+
+        $materiels = Materiel::all();
 
 
 
-        return view('livewire.reservations.index', compact('reservations'));
+
+        return view('livewire.reservations.index', compact('reservations','materiels'));
 
      }
 
