@@ -36,17 +36,17 @@ Route::get('/contact', function (){
     return view('contact');
 })-> name('contact');
 
-// Route::get('/home_admin', function (){
-//     return view('home_admin');
+Route::get('/home_admin', function (){
+    return view('home_admin');
 
-// })-> name('home_admin');
+})-> name('home_admin');
 
-Route::get("/home_admin", [AdminController::class, "indexUser"])-> name('home_admin');
-
-
+//Route::get("/home_admin", [AdminController::class, "indexUser"])-> name('home_admin');
 
 
-Route::get("/ges_reservation", [ReservationController::class, "index"]);
+
+
+//Route::get("/ges_reservation", [ReservationController::class, "index"]);
 
 //Route::resource("/ges_reservation", TypeMaterielController::class);
 
@@ -71,7 +71,13 @@ Route::resource('materiel', MaterielController::class);
 
 Route::resource('reservation', ReservationController::class);
 
-Route::get('/mes-reservations', [ReservationController::class, 'indexUser'])->name('reservation.indexuser');
+Route::get('/ges_reservation', [ReservationController::class, 'indexUser'])->name('reservation.indexuser');
+
+Route::get('/reservation/{id}/edit1', [ReservationController::class, 'edit1'])->name('reservation.edit1');
+Route::put('/reservation/{id}', [ReservationController::class, 'update'])->name('reservation.update');
+
+
+
 
 // Route::get('/about', function () {
 //     return 'Aboute page';

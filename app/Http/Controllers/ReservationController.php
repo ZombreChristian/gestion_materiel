@@ -22,10 +22,22 @@ class ReservationController extends Controller
         return view('livewire.reservation.index', compact('reservations'));
         //return view("ges_reservation" ,  compact("reservations"));
     }
-    public function indexUser()
+    public function indexUser1()
 {
     $reservations = Reservation::where('user_id', auth()->id())->paginate(10);
     return view('livewire.reservation.indexuser', compact('reservations'));
+}
+
+
+public function indexUser()
+{
+    $materiels = Materiel::all();
+    $durees = DureeReservation::all();
+    $statuts = StatutReservation::all();
+
+    $reservations = Reservation::where('user_id', auth()->id())->paginate(10);
+
+    return view('livewire.reservation.indexuser', compact('materiels', 'durees', 'statuts', 'reservations'));
 }
 
 
@@ -46,32 +58,21 @@ class ReservationController extends Controller
 // }
 
     // Enregistrer une nouvelle réservation
-    // Enregistrer une nouvelle réservation
-    public function store1(Request $request)
+    public function storeAdmin(Request $request)
     {
         $request->validate([
-            'materiels' => 'required|array', // Liste des matériels sélectionnés
-            'materiels.*' => 'exists:materiels,id', // Vérifie que chaque matériel existe
+            'materiel_id' => 'required|exists:materiels,id',
+            'user_id' => 'required|exists:users,id',
+            'statut_reservation_id' => 'required|exists:statut_reservations,id',
             'duree_reservation_id' => 'required|exists:duree_reservations,id',
             'date_reservation' => 'required|date',
             'commentaire' => 'nullable|string',
         ]);
 
-        // Créer la réservation
-        $reservation = Reservation::create([
-            'user_id' => Auth::id(), // Utilisateur connecté
-            'statut_reservation_id' => 1, // Statut "En attente"
-            'duree_reservation_id' => $request->duree_reservation_id,
-            'date_reservation' => $request->date_reservation,
-            'commentaire' => $request->commentaire,
-        ]);
+        Reservation::create($request->all());
 
-        // Attacher les matériels à la réservation
-        $reservation->materiels()->attach($request->materiels);
-
-        return redirect()->route('reservation.index')->with('success', 'Réservation créée avec succès.');
+        return redirect()->route('reservation.indexuser')->with('success', 'Réservation ajoutée avec succès.');
     }
-
 
     public function store(Request $request)
     {
@@ -86,11 +87,11 @@ class ReservationController extends Controller
 
         Reservation::create($request->all());
 
-        return redirect()->route('reservation.index')->with('success', 'Réservation ajoutée avec succès.');
+        return redirect()->route('reservation.indexuser')->with('success', 'Réservation ajoutée avec succès.');
     }
 
     // Afficher le formulaire de modification
-    public function edit1($id)
+    public function edit($id)
 {
     $reservation = Reservation::findOrFail($id);
     $materiels = Materiel::all();
@@ -105,19 +106,19 @@ class ReservationController extends Controller
 
 
 
-    public function edit($id)
+    public function edit1($id)
     {
         $reservation = Reservation::findOrFail($id);
         $materiels = Materiel::all();
         $users = User::all();
         $statuts = StatutReservation::all();
         $durees = DureeReservation::all();
-        return view('livewire.reservation.edit', compact('reservation', 'materiels', 'users', 'statuts', 'durees'));
+        return redirect()->route('reservation.indexuser')->with('reservation', 'materiels', 'users', 'statuts', 'durees');
     }
 
     // Mettre à jour une réservation
 
-    public function update1(Request $request, $id)
+    public function updateAdmin(Request $request, $id)
 {
     $request->validate([
         'materiels' => 'required|array', // Liste des matériels sélectionnés
@@ -165,7 +166,7 @@ class ReservationController extends Controller
         $reservation = Reservation::findOrFail($id);
         $reservation->update($request->all());
 
-        return redirect()->route('reservation.index')->with('success', 'Réservation mise à jour avec succès.');
+        return redirect()->route('reservation.indexuser')->with('success', 'Réservation mise à jour avec succès.');
     }
 
     // Supprimer une réservation
@@ -174,7 +175,7 @@ class ReservationController extends Controller
         $reservation = Reservation::findOrFail($id);
         $reservation->delete();
 
-        return redirect()->route('reservation.index')->with('success', 'Réservation supprimée avec succès.');
+        return redirect()->route('reservation.indexuser')->with('success', 'Réservation supprimée avec succès.');
     }
 
 

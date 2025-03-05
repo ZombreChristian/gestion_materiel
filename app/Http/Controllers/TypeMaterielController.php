@@ -12,9 +12,9 @@ class TypeMaterielController extends Controller
     public function index()
     {
          // Paginer les types de matériel (10 éléments par page)
-         $typesmat = TypeMateriel::paginate(10);
+         $types = TypeMateriel::paginate(10);
         //$types = TypeMateriel::all();
-        return view('livewire.typeMateriel.index', compact('typesmat'));
+        return view('livewire.typeMateriel.index', compact('types'));
     }
 
     // Afficher le formulaire de création

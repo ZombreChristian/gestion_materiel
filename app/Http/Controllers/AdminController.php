@@ -28,7 +28,7 @@ class AdminController extends Controller
 
          $types = TypeMateriel::paginate(10);
         //$types = TypeMateriel::all();
-        return view('livewire.typeMateriel.index', compact('types'));
+        return view('/home_admin', compact('types'));
     }
 
 
