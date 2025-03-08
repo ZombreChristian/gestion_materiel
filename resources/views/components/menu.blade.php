@@ -117,8 +117,8 @@
                 </li>
         </ul>
     </li>
-    <li class="nav-item {{ setMenuClass('admin.membres', 'menu-open') }}">
-        <a href="#" class="nav-link {{ setMenuClass('admin.membres', 'active') }}">
+    <li class="nav-item {{ setMenuClass('materiel', 'menu-open') }}">
+        <a href="#" class="nav-link {{ setMenuClass('materiel', 'active') }}">
             <i class="nav-icon fas fa-circle"></i>
             <p>
            Gestion équipements
@@ -129,17 +129,31 @@
         <ul class="nav nav-treeview">
 
                 <li class="nav-item">
-                    <a href="{{route('admin.membres.all.membre')}}" class="nav-link {{ setMenuActive('admin.membres.all.membre') }}">
+                    <a href="{{route('materiel.all.materiels')}}" class="nav-link {{ setMenuActive('materiel.all.materiels') }}">
 
                     <i class="far fa-dot-circle nav-icon"></i>
                     <p>équipements</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{route('materiel.all.type')}}" class="nav-link {{ setMenuActive('materiel.all.type') }}">
+
+                    <i class="far fa-dot-circle nav-icon"></i>
+                    <p>Type d'équipement</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{route('materiel.all.proprietaire')}}" class="nav-link {{ setMenuActive('materiel.all.proprietaire') }}">
+
+                    <i class="far fa-dot-circle nav-icon"></i>
+                    <p>Proprietaires</p>
+                    </a>
+                </li>
         </ul>
     </li>
 
-    <li class="nav-item {{ setMenuClass('admin.membres', 'menu-open') }}">
-        <a href="#" class="nav-link {{ setMenuClass('admin.membres', 'active') }}">
+    <li class="nav-item {{ setMenuClass('reservations', 'menu-open') }}">
+        <a href="#" class="nav-link {{ setMenuClass('reservations', 'active') }}">
             <i class="nav-icon fas fa-circle"></i>
             <p>
            Gestion Reservations
@@ -150,7 +164,7 @@
         <ul class="nav nav-treeview">
 
                 <li class="nav-item">
-                    <a href="{{route('admin.membres.all.membre')}}" class="nav-link {{ setMenuActive('admin.membres.all.membre') }}">
+                    <a href="{{route('reservations.all.reservation')}}" class="nav-link {{ setMenuActive('reservations.all.reservation') }}">
 
                     <i class="far fa-dot-circle nav-icon"></i>
                     <p>Reservations</p>

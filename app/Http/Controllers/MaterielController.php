@@ -16,7 +16,9 @@ class MaterielController extends Controller
      {
          $durees = DureeReservation::all(); // Assuming DureeReservation is your model
          $materiels = Materiel::paginate(10);
-         return view('livewire.materiel.index', compact('materiels', 'durees'));
+         $types = TypeMateriel::all();
+         $proprietaires = ProprietaireMateriel::all();
+         return view('livewire.materiel.liste', compact('materiels', 'durees', 'types', 'proprietaires'));
      }
  
      // Afficher le formulaire de création

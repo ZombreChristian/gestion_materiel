@@ -1,18 +1,8 @@
 <!DOCTYPE html>
 
-<head>
-    <title>home-user</title>
-
-    @include('include.head_link')
-
-</head>
-
 <body class="animsition">
 
     <div class="page-wrapper">
-
-        @include('include.sidebar_admin')
-
         <div class="page-container2">
         <div class="container py-4">
         <div class="card">

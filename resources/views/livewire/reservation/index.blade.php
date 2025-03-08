@@ -2,9 +2,7 @@
 <html lang="fr">
     
 <head>
-    <title>home-user</title>
-
-    @include('include.head_link')
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Liste des Réservations</title>
@@ -19,7 +17,7 @@
 
     <div class="page-wrapper">
 
-        @include('include.sidebar_admin')
+      
 
         <div class="page-container2">
         <div class="card">

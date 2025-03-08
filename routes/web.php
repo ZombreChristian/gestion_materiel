@@ -66,7 +66,7 @@ Route::resource('proprietaireMateriel', ProprietaireMaterielController::class);
 // Route::get("/prendre_mat/{ref}", [ReservationController::class, "prendre_mat"]);
 
 
-Route::resource('materiel', MaterielController::class);
+//Route::resource('materiel', MaterielController::class);
 
 
 Route::resource('reservation', ReservationController::class);
@@ -77,7 +77,50 @@ Route::get('/reservation/{id}/edit1', [ReservationController::class, 'edit1'])->
 Route::put('/reservation/{id}', [ReservationController::class, 'update'])->name('reservation.update');
 
 
+Route::group([
+    "prefix" => "materiel",
+    'as' => 'materiel.'
+], function(){
 
+    Route::controller(MaterielController::class)->group(function(){
+
+        // Route::resource('materiel', MaterielController::class);
+        Route::get('/all','index')->name('all.materiels');
+        
+
+        Route::controller(TypeMaterielController::class)->group(function(){
+            Route::get('/all_type','index')->name('all.type');
+           
+
+           
+        });
+
+        Route::controller(ProprietaireMaterielController::class)->group(function(){
+            Route::get('/all_proprietaire','index')->name('all.proprietaire');
+           
+
+           
+        });
+
+    });
+});
+
+
+Route::group([
+    "prefix" => "reservations",
+    'as' => 'reservations.'
+], function(){
+
+    Route::controller(ReservationController::class)->group(function(){
+
+        Route::get('/all_reservation','index')->name('all.reservation');
+       
+
+    });
+
+
+
+});
 
 // Route::get('/about', function () {
 //     return 'Aboute page';

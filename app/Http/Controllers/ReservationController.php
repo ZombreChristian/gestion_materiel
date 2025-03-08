@@ -18,15 +18,11 @@ class ReservationController extends Controller
     public function index()
     {
         
-        $reservations = Reservation::paginate(10);
-        return view('livewire.reservation.index', compact('reservations'));
+        $reservations = Reservation::paginate(8);
+        return view('livewire.reservation.liste', compact('reservations'));
         //return view("ges_reservation" ,  compact("reservations"));
     }
-    public function indexUser1()
-{
-    $reservations = Reservation::where('user_id', auth()->id())->paginate(10);
-    return view('livewire.reservation.indexuser', compact('reservations'));
-}
+    
 
 
 public function indexUser()
@@ -95,13 +91,14 @@ public function indexUser()
 {
     $reservation = Reservation::findOrFail($id);
     $materiels = Materiel::all();
+    $users = User::all();
     $durees = DureeReservation::all();
     $statuts = StatutReservation::all();
 
     // Vérifier si l'utilisateur peut modifier le statut
-    $canEditStatut = Auth::user()->isAdmin() || Auth::user()->isResponsableLabo();
+   // $canEditStatut = auth::user()->isAdmin() || auth::user()->isResponsableLabo();
 
-    return view('livewire.reservation.edit', compact('reservation', 'materiels', 'durees', 'statuts', 'canEditStatut'));
+    return view('livewire.reservation.edit', compact('reservation', 'materiels', 'users', 'durees', 'statuts'));
 }
 
 

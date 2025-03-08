@@ -11,7 +11,7 @@ class ProprietaireMaterielController extends Controller
      public function index()
      {
          $proprietaires = ProprietaireMateriel::paginate(10);
-         return view('livewire.proprietaireMateriel.index', compact('proprietaires'));
+         return view('livewire.proprietaireMateriel.liste', compact('proprietaires'));
      }
  
      // Afficher le formulaire de création
